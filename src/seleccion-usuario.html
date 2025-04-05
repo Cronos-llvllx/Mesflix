@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mesflix</title>
-    <link rel="stylesheet" href="style.css">
-    <script>
-        window.location.href = "login.html"; // Redirige al login automáticamente
-    </script>
+    <title>Document</title>
 </head>
-<body>
+<body id="seleccionUser-page">
     <nav>
         <a href="index.html">Inicio</a>
         <a href="catalogo.html">Catálogo</a>
@@ -17,11 +13,18 @@
         <a href="login.html">Login</a>  
     </nav>
 
+    <div id="selection-user">
+        <h1>Catálogo de Películas</h1>
+        <div id="movie-list"></div>
+    </div>
+
     <footer>
         <p>Mesflix &copy; 2025</p>
         <p>Todos los derechos reservados</p>
         <p>Desarrollado por Hector Daniel Gomez Medina</p>
     </footer>
+
     <script src="/src/assets/app.js"></script>
+    
 </body>
 </html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head class="p-3 mb-3 border-bottom">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo- Mesflix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-DQvkBjpPgn7RC31MCQoOeC9TI2kdqa4+BSgNMNj8v77fdC77Kj5zpWFTJaaAoMbC" crossorigin="anonymous">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        /* Contenedor general */
+        .hex-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Cada hexágono */
+        .hex {
+            width: 200px;
+            aspect-ratio: 1; /* Hace que el div sea un cuadrado */
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background-color: #6c757d;
+            position: relative;
+            text-align: center;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Estilo del texto dentro del hexágono */
+        .hex:hover {
+            background-color: #495057;
+        }
+        /* Etiqueta del género */
+        .hex span {
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .btn-third {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 7px 7px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+        .hex {
+            width: 150px;
+        }
+        .hex-grid {
+            gap: 5px;
+        }
+        h1 {
+            font-size: 1.5rem;
+        }
+    }
+    @media (max-width: 576px) {
+        .hex {
+            width: 100px;
+        }
+        .btn-third {
+            font-size: 0.8rem;
+            padding: 5px;
+        }
+        h1 {
+            font-size: 1.2rem;
+        }
+    }
+    </style>
+
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                <img src="../media/LogoMesflixO.jpg" alt="Tu Logo" width="40" height="32">
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 link-secondary fs-3">Catalogo</a></li>
+                <li><a onclick="showFavorites()"href="#" class="nav-link px-2 link-secondary fs-3">Favoritos</a></li>
+                <li><a href="#" class="nav-link px-2 link-dark fs-3">Ajustes</a></li>
+                
+                
+            </ul>
+    
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <input type="search" class="form-control" placeholder="Buscar..." aria-label="Search">
+            </form>
+    
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/media/FuegoUser.webp" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="#">Planes</a></li>
+                <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                <li><a class="dropdown-item" href="#">Cambiar usuario</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Cerrar sesion</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+</head>
+<body id="catalogo-page">
+
+    <div id="catalogo">
+        <h1>Catálogo de Películas</h1>
+        <div id="movie-list"></div>
+        
+    </div>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Explorar por Género</h1>
+        <div class="hex-grid">
+            <div class="hex">
+                <span class="btn" onclick="showMovies('Fantasía');">Fantasía</span>
+            </div>
+            <div class="hex">
+                <span class="btn" onclick="showMovies('Aventura');">Aventura</span>
+            </div>
+            <div class="hex">
+                <span class="btn" onclick="showMovies('comedia');">Comedia</span>
+            </div>
+            <div class="hex">
+                <span class="btn" onclick="showMovies('accion');">Acción</span>
+            </div>
+            <div class="hex">
+                <span class="btn" onclick="showMovies('cienciaFiccion');">Ciencia Ficción</span>
+            </div>
+            <div class="hex">
+                <span class="btn" onclick="showMovies('Terror');">Terror</span>
+            </div>
+            <div class="hex">
+                <span class="btn" onclick="showMovies('Drama');">Drama</span>
+            </div>
+            <div id="movies-container" class="container mt-4"></div>
+        </div>
+    </div>
+            <div id="favorites-container" class="container mt-4"></div>
+    
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Catalogo</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Contacto</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">User</a></li>
+        </ul>
+        <p class="text-center text-muted">© Mesflix &copy, 2025. Desarrollado por Hector Gomez</p>
+    </footer>
+
+    <script>
+        function showMovies(genre) {
+            const moviesContainer = document.getElementById('movies-container');
+            const moviesData = {
+                comedia: [
+                    { title: "Batman the Dark Night", description: "Batman tiene que mantener el equilibrio entre el heroísmo y el vigilantismo para pelear contra un vil criminal conocido como el Guasón, que pretende sumir Ciudad Gótica en la anarquía.", image: "../media/BatmanAK.webp" },
+                    { title: "Ghost Rider", description: "Ghost Rider es el nombre de muchos antihéroes que aparecen en los cómics estadounidenses publicados por Marvel Comics. Marvel había usado previamente el nombre en un personaje del oeste cuyo nombre más tarde se cambió a Jinete Fantasma.", image: "../media/GhostRider.webp" },
+                ],
+                accion: [
+                    { title: "Captain America:The Winter Soldier", description: "Capitán América, Viuda Negra y un nuevo aliado, Falcon, se enfrentan a un enemigo inesperado mientras intentan exponer una conspiración que pone en riesgo al mundo.", image: "../media/Wintersoldier.webp" },
+                    { title: "007: Operation Skyfall", description: "La identidad de los agentes encubiertos de todo el mundo ha quedado expuesta y el MI6 está siendo atacado. En el peor momento que ha vivido el servicio de inteligencia británico, M acude al único hombre en quien puede confiar: James Bond.", image: "../media/Skyfall.webp" },
+                ],
+                Fantasía: [
+                { title: "Batman the Dark Night", description: "Batman tiene que mantener el equilibrio entre el heroísmo y el vigilantismo para pelear contra un vil criminal conocido como el Guasón, que pretende sumir Ciudad Gótica en la anarquía.", image: "../media/BatmanAK.webp" },
+                { title: "Ghost Rider", description: "Ghost Rider es el nombre de muchos antihéroes que aparecen en los cómics estadounidenses publicados por Marvel Comics. Marvel había usado previamente el nombre en un personaje del oeste cuyo nombre más tarde se cambió a Jinete Fantasma.", image: "../media/GhostRider.webp" },
+                ],
+                Aventura: [
+                { title: "Captain America:The Winter Soldier", description: "Capitán América, Viuda Negra y un nuevo aliado, Falcon, se enfrentan a un enemigo inesperado mientras intentan exponer una conspiración que pone en riesgo al mundo.", image: "../media/Wintersoldier.webp" },
+                { title: "007: Operation Skyfall", description: "La identidad de los agentes encubiertos de todo el mundo ha quedado expuesta y el MI6 está siendo atacado. En el peor momento que ha vivido el servicio de inteligencia británico, M acude al único hombre en quien puede confiar: James Bond.", image: "../media/Skyfall.webp" },
+                ],
+                cienciaFiccion: [
+                { title: "Batman the Dark Night", description: "Batman tiene que mantener el equilibrio entre el heroísmo y el vigilantismo para pelear contra un vil criminal conocido como el Guasón, que pretende sumir Ciudad Gótica en la anarquía.", image: "../media/BatmanAK.webp" },
+                { title: "Ghost Rider", description: "Ghost Rider es el nombre de muchos antihéroes que aparecen en los cómics estadounidenses publicados por Marvel Comics. Marvel había usado previamente el nombre en un personaje del oeste cuyo nombre más tarde se cambió a Jinete Fantasma.", image: "../media/GhostRider.webp" },
+                ],
+                Terror: [
+                { title: "Captain America:The Winter Soldier", description: "Capitán América, Viuda Negra y un nuevo aliado, Falcon, se enfrentan a un enemigo inesperado mientras intentan exponer una conspiración que pone en riesgo al mundo.", image: "../media/Wintersoldier.webp" },
+                { title: "007: Operation Skyfall", description: "La identidad de los agentes encubiertos de todo el mundo ha quedado expuesta y el MI6 está siendo atacado. En el peor momento que ha vivido el servicio de inteligencia británico, M acude al único hombre en quien puede confiar: James Bond.", image: "../media/Skyfall.webp" },
+                ],
+                Drama: [
+                { title: "Batman the Dark Night", description: "Batman tiene que mantener el equilibrio entre el heroísmo y el vigilantismo para pelear contra un vil criminal conocido como el Guasón, que pretende sumir Ciudad Gótica en la anarquía.", image: "../media/BatmanAK.webp" },
+                { title: "Ghost Rider", description: "Ghost Rider es el nombre de muchos antihéroes que aparecen en los cómics estadounidenses publicados por Marvel Comics. Marvel había usado previamente el nombre en un personaje del oeste cuyo nombre más tarde se cambió a Jinete Fantasma.", image: "../media/GhostRider.webp" },
+                ]
+                
+            };
+    
+            // Limpiar el contenedor
+            moviesContainer.innerHTML = '';
+    
+            // Generar películas
+            moviesData[genre].forEach(movie => {
+            const movieCard = `
+                <div class="card mb-3 movie-card">
+                    <img src="${movie.image}" class="card-img-top" alt="${movie.title}">
+                    <div class="card-body">
+                        <h5 class="card-title">${movie.title}</h5>
+                        <p class="card-text">${movie.description}</p>
+                        <button class="btn btn-primary" onclick="viewMovie('${movie.title}')">Ver</button>
+                        <button class="btn btn-secondary" onclick="hideMovie(this)">Ocultar</button>
+                        <button class="btn btn-success" onclick='addToFavorites(${JSON.stringify(movie)})'>Favoritos</button>
+                    </div>
+                </div>
+            `;
+    moviesContainer.innerHTML += movieCard;
+});
+        }
+    
+        function viewMovie(title) {
+            alert(`Viendo ${title}`);
+        }
+    
+        function hideMovie(button) {
+            const card = button.closest('.movie-card');
+            card.style.display = 'none';
+        }
+        function addToFavorites(movie) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            
+            // Verifica si la película ya está en favoritos para evitar duplicados
+            if (favorites.some(fav => fav.title === movie.title)) {
+                alert(`${movie.title} ya está en favoritos.`);
+                return;
+            }
+
+            // Añade el objeto completo de la película al array
+            favorites.push(movie);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            alert(`${movie.title} añadido a favoritos.`);
+        }
+        function removeFavorite(title) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            // Filtra los favoritos para excluir el objeto cuyo título coincida
+            favorites = favorites.filter(fav => fav.title !== title);
+            localStorage.setItem('favorites', JSON.stringify(favorites)); // Actualiza localStorage
+            showFavorites(); // Actualiza la vista
+}
+        function showFavorites() {
+            // Obtener favoritos desde localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const favoritesContainer = document.getElementById('favorites-container'); // Asegúrate de tener este contenedor en tu HTML
+            favoritesContainer.innerHTML = ''; // Limpia el contenido previo
+
+            if (favorites.length === 0) {
+                favoritesContainer.innerHTML = '<p>No hay películas en favoritos.</p>';
+                return;
+            }
+
+            // Generar tarjetas para cada favorito
+            favorites.forEach(movie => {
+                const movieCard = `
+                    <div class="card mb-3 d-flex flex-row align-items-start">
+                        <!-- Imagen pequeña a la izquierda -->
+                        <img src="${movie.image}" class="img-fluid" alt="${movie.title}" style="width: 100px; height: auto; object-fit: cover; margin-right: 1rem;">
+                        
+                        <!-- Contenido a la derecha -->
+                        <div class="flex-grow-1">
+                            <h5 class="card-title">${movie.title}</h5>
+                            <p class="card-text">${movie.description}</p>
+                            
+                            <!-- Botones debajo de la descripción -->
+                            <div class="mt-2">
+                                <button class="btn btn-primary btn-sm" onclick="viewMovie('${movie.title}')">Ver</button>
+                                <button class="btn btn-danger btn-sm" onclick="removeFavorite('${movie.title}')">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                favoritesContainer.innerHTML += movieCard;
+            });
+        }
+
+        
+
+        function removeFavorite(title) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            // Filtra los favoritos para excluir el objeto cuyo título coincida
+            favorites = favorites.filter(fav => fav.title !== title);
+            localStorage.setItem('favorites', JSON.stringify(favorites)); // Actualiza localStorage
+            showFavorites(); // Actualiza la vista
+        }
+
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-YUe2LzesAfftltw+PEaao2tjU/QATaW/rOitAq67e0CT0Zi2VVRL0oC4+gAaeBKu" crossorigin="anonymous"></script>
+    
+</body>
+</html>

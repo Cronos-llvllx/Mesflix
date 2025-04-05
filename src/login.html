@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesflix - Login</title>
+    <link rel="stylesheet" href="/src/assets/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body id="login-page">
+    <div class="container">
+        <div class="form-box login">
+            <form action="">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input type="text" name="username" placeholder="User" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">forgot password?</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p>or login with social platforms</p>
+                <div class="social-icons">
+                    <a href="#"><i class="bx bxl-google"></i></a>
+                    <a href="#"><i class="bx bxl-github"></i></a>
+                    <a href="#"><i class="bx bxl-twitter"></i></a>
+                    <a href="#"><i class="bx bxl-linkedin"></i></a>
+                </div>
+            </form>
+        </div>
+        <div class="form-box register">
+            <form action="">
+                <h1>Registration</h1>
+                <div class="input-box">
+                    <input type="text" name="username"  placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="email"  placeholder="Email" required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password"  placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <p>or register with social platforms</p>
+                <div class="social-icons">
+                    <a href="#"><i class="bx bxl-google"></i></a>
+                    <a href="#"><i class="bx bxl-github"></i></a>
+                    <a href="#"><i class="bx bxl-twitter"></i></a>
+                    <a href="#"><i class="bx bxl-linkedin"></i></a>
+                </div>
+            </form>
+        </div>
+
+            <div class="toggle-box">
+                <div class="toggle-panel toggle-left">
+                    <h1>Hola, bienvenido!</h1>
+                    <p>No tienes una cuenta?</p>
+                    <button class="btn register-btn">Register</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Bienvenido!</h1>
+                    <p> tienes una cuenta?</p>
+                    <button class="btn login-btn">Login</button>
+                </div>
+            </div>
+
+    <script src="/src/js/login.js"></script>
+</body>
+</html>
