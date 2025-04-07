@@ -10,10 +10,7 @@ Mesflix es un servicio de streaming , hecho con HTML, CSS con boostrap Y Javascr
 Frameworks o librerías: Ninguna por el momento.
 Herramientas de diseño: Draw.io para la elaboracion de mi mockup.
 Software o IDE:Visual Studio Code.
-Recursos adicionales: https://developer.mozilla.org/en-US/docs/Web/HTML.
-https://developer.mozilla.org/en-US/docs/Web/CSS
-https://developer.mozilla.org/en-US/docs/Web/JavaScript
-https://lenguajehtml.com/|
+Recursos adicionales: https://developer.mozilla.org/en-US/docs/Web/HTML. https://developer.mozilla.org/en-US/docs/Web/CSS. https://developer.mozilla.org/en-US/docs/Web/JavaScript. https://lenguajehtml.com/|
 ## Como instalar?
 ### 1. Clona el repositorio: En la terminal o linea de comandos ejecuta
 git clone https://github.com/Cronos-llvllx/Mesflix.git
@@ -24,7 +21,8 @@ code . (bash)
 ### 4. Ejecuta el proyecto
 Abre el archivo de index.html con liveServer y asegurate que las carpetas y todos los archivos se hayan descargado correctamente.
 ## Mockup
-![Mockup](docs/WireFrames.png)
+(![Mockup](https://github.com/Cronos-llvllx/Mesflix/blob/main/docs/WireFrames.png)
+
 
 ## Capturas de pantalla
 
