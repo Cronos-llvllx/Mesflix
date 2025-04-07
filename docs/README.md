@@ -1,6 +1,7 @@
 # Mesflix
 ---
 Hector Daniel Gomez Medina
+---
 Mesflix es un servicio de streaming , hecho con HTML, CSS con boostrap Y Javascript. Es desarrollado como parte de un bootcamp de Mega con Liderly para aprender las bases de la programacion y futuramente aprender Angular para hacierlo con una mejor experiencia mas robusta y escalable.
 ***
 ## Requerimientos tecnicos
