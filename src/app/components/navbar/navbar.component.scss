@@ -1,0 +1,102 @@
+
+  // Paleta y Variables
+  $navbar-bg-solid: #141414; // Fondo sólido (off-black)
+  $navbar-height: 68px;
+  $text-color: #e5e5e5; // Off-white principal
+  $text-hover: #b3b3b3; // Gris más oscuro para hover (estilo Netflix)
+  $text-active: #ffffff; // Blanco para link activo (¡evitamos #fff si es estricto, usa $text-color!) -> Ajuste: usaré #f8f8f8
+  $text-active-strict: #f8f8f8; // Casi blanco
+  $link-active-weight: 700;
+  $max-content-width: 95%; // Usar porcentaje para que se adapte mejor
+  :host {
+    display: block; // Ocupa espacio
+  }
+  .app-navbar {
+    position: fixed; // Fijo en la parte superior
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $navbar-height;
+    z-index: 1000; // Por encima de otro contenido
+    // Fondo inicial con degradado para que el texto sea legible
+    background: linear-gradient(to bottom, rgba(20, 20, 20, 0.8) 0%, rgba(20, 20, 20, 0) 100%);
+    transition: background-color 0.4s ease-out; // Transición suave del fondo
+    // Estilo cuando el usuario ha hecho scroll
+    &.is-scrolled {
+      background-color: $navbar-bg-solid;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); // Sombra sutil opcional
+    }
+  }
+  .navbar-content {
+    max-width: $max-content-width;
+    height: 100%;
+    margin: 0 auto; // Centrar contenido
+    padding: 0 2%; // Padding lateral pequeño
+    display: flex;
+    justify-content: space-between; // Separa izq y der
+    align-items: center;
+  }
+
+  .navbar-left,
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; // Espacio entre elementos de cada lado
+  }
+
+  .navbar-logo {
+    img {
+      height: 30px; // Ajusta tamaño de tu logo
+      display: block; // Evita espacios extra debajo
+    }
+  }
+
+  .navbar-links {
+    display: flex;
+    gap: 18px;
+
+    a {
+      color: $text-color;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      padding: 5px 0; // Padding vertical para área de clic
+
+      &:hover {
+        color: $text-hover;
+      }
+
+      &.active-link {
+        color: $text-active-strict; // Casi blanco cuando está activa
+        font-weight: $link-active-weight;
+      }
+    }
+  }
+
+  .search-icon-btn {
+    background: none;
+    border: none;
+    color: $text-active-strict; // Icono casi blanco
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .user-menu {
+    .user-avatar-link {
+      display: block; // Asegura que ocupe su espacio
+    }
+    .user-avatar {
+      height: 32px;
+      width: 32px;
+      border-radius: 4px; // Bordes redondeados
+      display: block;
+      cursor: pointer;
+    }
+  }

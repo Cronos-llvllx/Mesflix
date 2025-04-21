@@ -1,0 +1,108 @@
+
+  $bg-color: #141414; // Off-black (el mismo que usamos antes)
+  $shape-bg-color: #2E2E2E; // Gris oscuro para las formas
+  $shape-bg-hover: #404040; // Gris un poco más claro para hover
+  $text-color: #E0E0E0; // Off-white / Gris muy claro para texto
+  $text-color-hover: #FFFFFF; // Blanco puro SÓLO para hover si queremos más contraste
+
+  // Variables de tamaño (ajusta según necesites)
+  $size-s: 100px;
+  $size-m: 140px;
+  $size-l: 220px;
+
+  // Contenedor principal de la página de catálogo
+  .catalog-container {
+    background-color: $bg-color;
+    padding: 40px 20px; // Espaciado interno
+    min-height: calc(100vh - 80px); // Ajusta si tienes cabecera/pie de página
+  }
+
+  // Título (si decides usarlo)
+  h2 {
+    color: $text-color;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2em;
+  }
+
+  // Grid/Contenedor para las formas de género
+  .genre-grid {
+    display: flex; // Usar flexbox
+    flex-wrap: wrap; // Permitir que los elementos bajen a la siguiente línea
+    justify-content: center; // Centrar horizontalmente
+    align-items: center; // Centrar verticalmente los items en cada línea
+    gap: 30px; // Espacio entre los items
+    padding: 20px; // Espacio interno del grid
+  }
+
+  // Contenedor individual para cada género (opcional, para espaciado extra si es necesario)
+  .genre-item {
+    // Podríamos añadir perspectiva aquí si la animación hover fuera 3D
+  }
+
+  // Estilos base para TODAS las formas de género
+  .genre-shape {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 15px; // Padding interno para el texto
+    background-color: $shape-bg-color;
+    color: $text-color;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative; // Para posibles pseudo-elementos o overlays futuros
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease; // Transición suave para hover
+
+    // --- Definición de Tamaños ---
+    &.size-small { width: $size-s; height: $size-s * 0.866; } // Alto para hexágono regular aprox.
+    &.size-medium { width: $size-m; height: $size-m * 0.866; }
+    &.size-large { width: $size-l; height: $size-l * 0.75; } // Ajustar alto para el heptágono grande
+
+    // --- Definición de Formas con clip-path ---
+    // Hexágono Regular
+    &.genre-hexagon {
+      // clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); // Hexágono puntiagudo
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); // Hexágono más parecido al wireframe
+    }
+
+    // Hexágono Ancho (Aventura?)
+    &.shape-wide {
+      width: $size-m * 1.3; // Más ancho
+      height: $size-m * 0.7; // Un poco menos alto
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); // Misma forma hexágono
+    }
+
+    // Heptágono (Acción) - ¡Ajusta los puntos! Esto es una aproximación.
+    &.genre-heptagon {
+      clip-path: polygon(50% 0%, 95% 35%, 85% 90%, 50% 100%, 15% 90%, 5% 35%);
+    }
+
+    // Hexágono Alto (Drama) - ¡Ajusta los puntos!
+    &.genre-tall-hexagon {
+      width: $size-m * 0.8; // Más estrecho
+      height: $size-m * 1.1; // Más alto
+      clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%);
+    }
+
+    // --- Animación Hover ---
+    &:hover {
+      transform: scale(1.1); // Hacer un 10% más grande
+      background-color: $shape-bg-hover; // Cambiar ligeramente el fondo
+      z-index: 10; // Asegurar que se ponga por encima de otros al agrandarse
+      .genre-name {
+        color: $text-color-hover; // Opcional: cambiar color de texto
+      }
+    }
+  }
+
+  // Estilo del nombre del género dentro de la forma
+  .genre-name {
+    font-size: 1em; // Tamaño base, se ajustará un poco por el tamaño del contenedor
+    // Podríamos limitar el ancho si el texto es muy largo:
+    // max-width: 90%;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // white-space: nowrap;
+    transition: color 0.3s ease; // Transición suave para el color del texto en hover
+  }

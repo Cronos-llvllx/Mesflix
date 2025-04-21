@@ -1,0 +1,163 @@
+// src/app/pages/genre-movies/genre-movies.component.scss
+$text-color: #e0e0e0;
+$secondary-text-color: #a0a0a0;
+$card-bg: #1f1f1f; // Un gris un poco más claro que el fondo general
+$button-bg: #444;
+$button-hover-bg: #555;
+$new-item-scale: 1.02; // Ligeramente más grande el item nuevo
+
+.genre-movies-container {
+  padding: 20px 4%; // Padding consistente con navbar/footer
+  color: $text-color;
+
+  h2 {
+    margin-bottom: 30px;
+    font-size: 1.8em;
+  }
+}
+
+.movie-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; // Espacio entre películas
+}
+
+.movie-item-wrapper {
+  background-color: $card-bg;
+  border-radius: 5px;
+  overflow: hidden; // Asegura que el contenido no se salga del borde redondeado
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.015); // Ligero zoom al pasar el mouse sobre toda la tarjeta
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Contenedor base para ambos layouts de item
+.movie-item {
+  display: flex;
+  align-items: center; // Alinear verticalmente
+  padding: 15px;
+  gap: 15px;
+}
+
+// --- Estilos Layout Película NUEVA ---
+.movie-item.is-new {
+  // Puede que necesitemos un scale extra si queremos que sea más grande
+  // transform: scale($new-item-scale); // Aplicado al wrapper es mejor
+
+  .movie-info {
+    flex: 1 1 60%; // Ocupa más espacio
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; // Alinear a la izquierda
+  }
+  .movie-poster {
+    flex: 1 1 40%; // Ocupa menos espacio
+    max-width: 300px; // Limitar tamaño máximo de imagen
+    img { max-height: 200px; } // Limitar altura
+  }
+   // Botones uno al lado del otro
+  .movie-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+}
+
+// --- Estilos Layout Película ESTÁNDAR ---
+.movie-item.is-standard {
+  .movie-poster {
+    flex: 0 0 150px; // Ancho fijo para el poster
+    width: 150px; // Asegurar ancho
+    img { max-height: 120px; } // Limitar altura
+  }
+  .movie-info {
+    flex-grow: 1; // Ocupa el espacio restante
+    display: flex;
+    flex-direction: column; // Título arriba, descripción abajo
+  }
+   // Botones al final, quizás alineados a la derecha o centrados verticalmente
+  .movie-actions {
+    flex-shrink: 0; // No se encoge
+    display: flex;
+    flex-direction: column; // Botones uno encima del otro
+    gap: 8px;
+    margin-left: 15px; // Espacio antes de los botones
+  }
+}
+
+// --- Estilos Comunes para elementos internos ---
+.movie-poster {
+  img {
+    display: block;
+    width: 100%;
+    height: auto; // Mantiene proporción
+    object-fit: cover; // Cubre el área sin distorsionar
+    border-radius: 3px;
+  }
+}
+
+.movie-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: $text-color;
+  margin: 0 0 5px 0;
+}
+
+.movie-desc {
+  font-size: 0.9em;
+  color: $secondary-text-color;
+  line-height: 1.4;
+  margin: 0;
+  // Limitar número de líneas (opcional)
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // Muestra máximo 2 líneas
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-actions {
+  .btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: $button-bg;
+    color: $text-color;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $button-hover-bg;
+    }
+  }
+  // Estilos específicos si quieres diferenciar "Ver" de "Ocultar"
+  .btn-watch { background-color: green; }
+  .btn-hide { background-color: $button-bg; }
+}
+.btn-favorite {
+  background-color: transparent; // Fondo transparente inicialmente
+  border: 1px solid $secondary-text-color; // Borde gris
+  color: $secondary-text-color;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1); // Ligero fondo blanco en hover
+    border-color: $text-color;
+    color: $text-color;
+  }
+
+  // Estilo cuando SÍ es favorito
+  &.is-favorite {
+    background-color: rgba(229, 9, 20, 0.2); // Fondo rojo semitransparente (tipo Netflix)
+    border-color: rgba(229, 9, 20, 0.8); // Borde rojo
+    color: #e50914; // Texto/icono rojo
+
+    &:hover {
+      background-color: rgba(229, 9, 20, 0.3);
+    }
+  }
+}

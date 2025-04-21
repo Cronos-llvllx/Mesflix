@@ -1,0 +1,10 @@
+  <div class="catalog-container">
+    <div class="genre-grid">
+      <div class="genre-item" *ngFor="let genre of genres">
+        <div class="genre-shape"
+            [ngClass]="genre.cssClass" (click)="selectGenre(genre)"
+            title="Ver películas de {{ genre.name }}"> <span class="genre-name">{{ genre.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>

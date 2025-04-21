@@ -1,0 +1,115 @@
+  // Variables (opcional, pero útil)
+  $profile-size: 130px; // Tamaño del diamante (ancho y alto)
+  $diamond-margin: 20px; // Margen alrededor de cada diamante
+  $text-color: #fff; // Color de texto principal
+  $add-profile-bg: #444; // Fondo para el botón de añadir
+  $hover-border-color: #e50914; // Color de borde al pasar el mouse (rojo Netflix?)
+  $background-color: #141414; // Fondo oscuro tipo Netflix
+
+  // Contenedor principal de la página
+  .user-selection-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Centrar verticalmente
+    align-items: center; // Centrar horizontalmente
+    min-height: 100vh; // Ocupar toda la altura de la ventana
+    background-color: $background-color;
+    padding: 20px;
+    box-sizing: border-box; // Asegura que el padding no aumente el tamaño total
+  }
+
+  // Título "Who Are you?"
+  h2 {
+    color: $text-color;
+    font-size: 2.5em; // Tamaño grande
+    font-weight: bold;
+    margin-bottom: 40px; // Espacio debajo del título
+    text-align: center;
+  }
+
+  // Contenedor de los perfiles
+  .profiles-grid {
+    display: flex; // Usar flexbox para alinear
+    flex-wrap: wrap; // Permitir que pasen a la siguiente línea si no caben
+    justify-content: center; // Centrar los perfiles horizontalmente
+    gap: $diamond-margin * 2; // Espacio horizontal y vertical entre wrappers
+    max-width: 600px; // Limitar el ancho máximo del contenedor de perfiles
+  }
+
+  // Wrapper para cada diamante (ayuda con el espaciado)
+  .profile-diamond-wrapper {
+    // Podríamos usar Grid en .profiles-grid para un layout más complejo si es necesario
+    // Por ahora, flex con wrap funciona para una lista simple.
+    padding: $diamond-margin; // Espacio alrededor para que el hover no se corte
+  }
+
+  // El Diamante principal
+  .profile-diamond {
+    width: $profile-size;
+    height: $profile-size;
+    background-color: #333; // Color de fondo por defecto
+    background-size: cover; // Asegura que la imagen cubra el área
+    background-position: center; // Centra la imagen de fondo
+    position: relative; // Necesario para posicionar el nombre dentro
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; // Para centrar el contenido interno
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden; // Ocultar partes de la imagen/contenido que se salgan del clip-path
+
+    // --- La magia del Diamante con clip-path ---
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+
+    // Efecto al pasar el mouse (hover)
+    &:hover {
+      transform: scale(1.1); // Agrandar ligeramente
+      // Añadir un borde simulado o sombra puede ser complicado con clip-path,
+      // podríamos usar un pseudo-elemento o un wrapper si es necesario un borde visible.
+      // Una sombra podría funcionar:
+      // box-shadow: 0 0 15px rgba(229, 9, 20, 0.7); // Sombra roja
+    }
+  }
+
+  // Nombre del perfil (dentro del diamante)
+  .profile-name {
+    color: $text-color;
+    font-weight: bold;
+    font-size: 1em; // Ajusta según necesites
+    padding: 5px; // Pequeño padding
+    // Fondo semi-transparente opcional para legibilidad sobre la imagen
+    // background-color: rgba(0, 0, 0, 0.5);
+    // border-radius: 3px;
+    // position: absolute; // Alternativa para posicionar
+    // bottom: 15%; // Ajustar posición si usas absolute
+    // left: 50%;
+    // transform: translateX(-50%);
+    // width: 80%; // Ajustar ancho
+  }
+
+  // Estilos específicos para el diamante de "Añadir Perfil"
+  .add-profile {
+    background-color: $add-profile-bg; // Fondo distinto
+    background-image: none !important; // Asegurarse que no herede background-image
+
+    .add-icon {
+      font-size: 3em; // Tamaño del '+'
+      color: #aaa; // Color del '+'
+      line-height: 1; // Ajustar altura de línea
+      margin-bottom: 5px; // Espacio entre el icono y el texto
+    }
+
+    .profile-name {
+      font-size: 0.9em; // Texto un poco más pequeño
+      color: #aaa; // Color de texto más tenue
+    }
+
+    &:hover {
+      background-color: lighten($add-profile-bg, 10%); // Aclarar un poco al pasar el mouse
+      .add-icon, .profile-name {
+        color: $text-color; // Cambiar color del texto/icono al pasar el mouse
+      }
+    }
+  }

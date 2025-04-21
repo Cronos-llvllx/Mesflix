@@ -1,0 +1,22 @@
+  <div class="user-selection-container">
+
+    <h2>Quien eres?</h2> <div class="profiles-grid"> <div class="profile-diamond-wrapper" *ngFor="let profile of profiles">
+        <div class="profile-diamond"
+            (click)="selectProfile(profile)"
+            [style.background-image]="'url(' + profile.imageUrl + ')'"
+            title="Seleccionar {{ profile.name }}"> <span class="profile-name">{{ profile.name }}</span>
+        </div>
+      </div>
+
+      <div class="profile-diamond-wrapper">
+        <div class="profile-diamond add-profile"
+            (click)="createProfile()"
+            title="Crear Nuevo Perfil">
+          <span class="add-icon">+</span>
+          <span class="profile-name">Add Profile</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>

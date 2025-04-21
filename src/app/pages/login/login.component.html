@@ -1,0 +1,26 @@
+<h2>Ingresa a Mesflix</h2>
+<form (ngSubmit)="onLogin()" class="form-box">
+  <div class="input-group">
+    <label for="user">User</label>
+    <input type="text" id="user" placeholder="Ingresa tu usuario">
+    </div>
+
+  <div class="input-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+    </div>
+
+  <a href="#" class="forgot-password">Olvidaste tu contraseña?</a>
+
+  <button type="submit" class="login-button">Ingresar</button>
+
+  <div class="social-login">
+    <span>o ingresa con alguna red social</span>
+    <div class="social-icons">
+          <a href="#"><i class="bx bxl-google"></i></a>
+          <a href="#"><i class="bx bxl-github"></i></a>
+          <a href="#"><i class="bx bxl-twitter"></i></a>
+          <a href="#"><i class="bx bxl-linkedin"></i></a>
+    </div>
+  </div>
+</form>

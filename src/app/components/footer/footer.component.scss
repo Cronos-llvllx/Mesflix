@@ -1,0 +1,56 @@
+// src/app/components/footer/footer.component.scss
+
+// Paleta (consistente con el resto de la app)
+$footer-bg: #101010;      // Casi negro, pero no #000
+$footer-text: #a0a0a0;    // Gris claro/medio
+$footer-link-hover: #dcdcdc; // Gris más claro para hover
+$max-content-width: 1100px; // Ancho máximo del contenido centrado
+
+:host {
+  display: block; // Asegura que el componente ocupe espacio
+  width: 100%;
+}
+
+.app-footer {
+  background-color: $footer-bg;
+  color: $footer-text;
+  padding: 30px 20px; // Espaciado vertical y horizontal
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: auto; // Importante para "sticky footer" si AppComponent usa Flexbox
+}
+
+.footer-content {
+  max-width: $max-content-width;
+  margin: 0 auto; // Centra el contenido horizontalmente
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Centra los elementos (nav y p)
+  gap: 15px; // Espacio entre la navegación y el copyright
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap; // Para que los links bajen en pantallas pequeñas
+  justify-content: center;
+  gap: 25px; // Espacio entre links
+
+  a {
+    color: $footer-text;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: color 0.2s ease;
+
+    &:hover,
+    &.active-link { // Estilo para hover y enlace activo
+      color: $footer-link-hover;
+      // text-decoration: underline; // Opcional: subrayado en hover/activo
+    }
+  }
+}
+
+.footer-copyright {
+  font-size: 0.8em;
+  text-align: center;
+  margin: 0; // Quitar margen por defecto del párrafo
+}

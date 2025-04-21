@@ -1,0 +1,100 @@
+//@tailwind base;
+//@tailwind components;
+//@tailwind utilities;
+/* src/app/pages/login/login.component.scss */
+
+// Estilo para el contenedor del formulario si es necesario
+form {
+  margin-top: 20px; // Espacio después del título H2
+  text-align: center; // Centrar elementos inline como el texto social
+}
+
+// Título del formulario (ya centrado por el contenedor padre, pero podemos ajustar)
+h2 {
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 600; // Un poco más grueso
+}
+
+// Grupo de Label + Input
+.input-group {
+  display: flex; // Poner label e input en línea
+  align-items: center; // Alinear verticalmente al centro
+  margin-bottom: 15px; // Espacio entre grupos
+  text-align: left; // Alinear texto del grupo a la izquierda
+
+  label {
+    flex: 0 0 80px; // Base de 80px, no crece, no se encoge. Ajusta el ancho según necesites.
+    margin-right: 10px; // Espacio entre label e input
+    font-weight: 500;
+    color: #555;
+    text-align: right; // Alinear el texto de la etiqueta a la derecha
+  }
+
+  input {
+    flex-grow: 1; // El input ocupa el espacio restante
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px; // Bordes ligeramente redondeados
+    font-size: 0.95em;
+  }
+}
+
+// Enlace de "olvidé contraseña"
+.forgot-password {
+  display: block; // Ocupa su propia línea
+  text-align: right; // Alinear a la derecha
+  margin-top: -5px; // Acercarlo un poco al input de arriba
+  margin-bottom: 20px; // Espacio antes del siguiente elemento
+  font-size: 0.9em;
+  color: #007bff; // Color azul típico de enlace
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Botón de Login principal (ajusta si lo tienes o no)
+.login-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #6a82fb; // Azul que usamos antes
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    margin-bottom: 20px; // Espacio antes de la sección social
+
+    &:hover {
+      background-color: #5a72e0;
+    }
+}
+
+
+// Sección de login social
+.social-login {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #666;
+
+  span {
+    display: block; // El texto en su propia línea
+    margin-bottom: 15px; // Espacio antes de los iconos
+  }
+}
+
+// Contenedor de los iconos sociales
+.social-icons a {
+  display: inline-flex;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 24px;
+  color: #333;
+  text-decoration: none;
+  margin: 0 8px;
+}

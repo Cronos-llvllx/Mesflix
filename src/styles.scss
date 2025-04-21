@@ -1,0 +1,16 @@
+//@tailwind base;
+//@tailwind components;
+//@tailwind utilities;
+html, body {
+  height: 100%; // Asegura que html y body puedan ocupar toda la altura
+  margin: 0;     // ¡Elimina el margen por defecto del body!
+  padding: 0;    // También quita el padding por si acaso algún navegador lo añade
+  background-color: #141414; // Aplica tu color de fondo oscuro deseado globalmente
+  font-family: sans-serif; // Define una fuente base si quieres
+  box-sizing: border-box; // Una buena práctica general
+}
+
+// Opcional: Asegura que todos los elementos hereden el box-sizing
+*, *::before, *::after {
+  box-sizing: inherit;
+}

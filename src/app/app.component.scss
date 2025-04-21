@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Ocupar al menos toda la altura de la ventana
+}
+
+.main-content {
+  flex-grow: 1; // Hace que el área de contenido principal crezca y empuje el footer hacia abajo
+}
+
+// El 'margin-top: auto;' en .app-footer (footer.component.scss) funciona junto con esto.

@@ -1,0 +1,95 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ocupa toda la altura */
+  background: linear-gradient(to right, #e0eafc, #cfdef3); /* Fondo degradado*/
+  padding: 20px;
+}
+
+.auth-card {
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px; /* Ajusta el ancho máximo */
+  text-align: center; /* Centrar texto dentro de la tarjeta */
+}
+
+.auth-toggle {
+  margin-bottom: 25px;
+  display: flex; /* Para poner botones lado a lado */
+  justify-content: center; /* Centrar los botones */
+  border: 1px solid #ddd; /* Opcional: un borde alrededor */
+  border-radius: 8px;
+  overflow: hidden; /* Para que el borde redondeado funcione */
+}
+
+.auth-toggle button {
+  flex: 1; /* Ocupar espacio igual */
+  padding: 10px 15px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  color: #555;
+}
+
+.auth-toggle button.active {
+  background-color: #6a82fb; /* Color del botón activo (similar al login) */
+  color: white;
+  font-weight: bold;
+}
+
+.auth-toggle button:not(.active):hover {
+  background-color: #e0e0e0;
+}
+
+/* Puedes mover estilos comunes de los forms aquí o dejarlos en sus componentes */
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Estilos básicos para inputs y botones que pueden ir en los CSS de los hijos
+   o en un archivo global de estilos */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left; /* Alinear labels a la izquierda */
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box; /*Para que el padding no aumente el tamaño */
+}
+
+/* Estilo para el botón principal se puede adaptar en individual por componente) */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #6a82fb;
+  color: white;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+  background-color: #5a72e0;
+}
+

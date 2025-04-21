@@ -1,0 +1,35 @@
+  <div class="favorites-container">
+    <h2>Mis Favoritos</h2>
+
+    <div class="movie-list" *ngIf="favoriteMovies.length > 0; else noFavorites">
+      <div *ngFor="let movie of favoriteMovies"
+          class="movie-item-wrapper"
+          (click)="viewMovieDetails(movie)">
+
+        <div class="movie-item is-standard"> <div class="movie-poster">
+            <img [src]="movie.imageUrl" [alt]="movie.title">
+          </div>
+          <div class="movie-info">
+            <h3 class="movie-title">{{ movie.title }}</h3>
+            <p class="movie-desc">{{ movie.description }}</p>
+          </div>
+          <div class="movie-actions">
+            <button class="btn btn-watch" (click)="watchMovie(movie, $event)">Ver</button>
+            <button class="btn btn-hide" (click)="hideMovie(movie, $event)">Ocultar</button>
+            <button
+              class="btn btn-favorite is-favorite"
+              (click)="toggleFavorite(movie, $event)"
+              title="Quitar de favoritos">
+              ★ Favorito
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <ng-template #noFavorites>
+      <p class="empty-message">Aún no has añadido ninguna película a tus favoritos.</p>
+    </ng-template>
+
+  </div>

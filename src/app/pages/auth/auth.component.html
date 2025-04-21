@@ -1,0 +1,16 @@
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="auth-toggle">
+      <button (click)="showLogin()" [class.active]="isLoginView">Ingresa</button>
+      <button (click)="showRegister()" [class.active]="!isLoginView">Registro</button>
+    </div>
+
+    <div class="form-area">
+      <app-login *ngIf="isLoginView"></app-login>
+
+      <app-register *ngIf="!isLoginView"></app-register>
+    </div>
+
+  </div>
+</div>
