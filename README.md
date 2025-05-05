@@ -42,7 +42,7 @@ En este caso despues de pasar por el selection user nos redirecciona a la pagina
 ![Catalog](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/Catalogo.png)
 ### 4- Visualizacion de peliculas
 Se vera asi al darle clic al genero requerido, donde se muestra imagen  titulo y descripcion y debajo los botones Ver, ocultar y favorito. En este caso para agregar a favoritos hay que darle click al boton con la Estrella favorito y para quitarlo de favoritos solo es dandole clic de nuevo al mismo boton.
-![Movies](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/ViesualizacionPelicuas.png)
+![Movies](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/VisualizacionPelicuas.png)
 ### 5- Favoritos
 En este caso hay que primero darle clic a un genero, despues darle clic al boton de favoritos debajo de la pelicula que deseamos agregar a favoritos y por ultimo darle clic al boton favoritos del lado de cada pelicula y despues ir a la pestana del navbar favoritos donde apareceran los que seleccionaste.
 ![Favorites](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/FavoritosA1.png)
