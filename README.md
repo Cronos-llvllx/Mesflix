@@ -8,10 +8,10 @@ Mesflix es un servicio de streaming , hecho con HTML, SCSS con TypeScript y Angu
 ## Requerimientos tecnicos
 | Requerimientos | Todo lo que usaste |
 |----------------| --------------------|
-| - Migrar a Angular. - Usar TypeScript. -  Concluir funcionalidades de los menus que hayas puesto. - No clones de netflix,amazon, etc. - Responsive.               | Lenguajes de programación: HTML, SCSS , TypeScript, Angular.
+| - Responsividad. - Performance. -  Implementacion de asincronos. - RXJS, - Testing, 50 % de testing code coverage en el proyecto.               | Lenguajes de programación: HTML, SCSS , TypeScript, Angular.
 Frameworks o librerías: Angular 18.
 Herramientas de diseño: Draw.io para la elaboracion de mi mockup.
-Software o IDE:Visual Studio Code.
+Software o IDE: Visual Studio Code.
 Recursos adicionales: https://developer.mozilla.org/en-US/docs/Web/HTML. https://developer.mozilla.org/en-US/docs/Web/CSS. https://angular.dev/. https://lenguajehtml.com/|
 ## Como instalar?
 ### 1. Clona el repositorio: En la terminal o linea de comandos ejecuta(asegurate de tener git instalado en tu computadora)
@@ -42,25 +42,30 @@ En este caso despues de pasar por el selection user nos redirecciona a la pagina
 ![Catalog](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/Catalogo.png)
 ### 4- Visualizacion de peliculas
 Se vera asi al darle clic al genero requerido, donde se muestra imagen  titulo y descripcion y debajo los botones Ver, ocultar y favorito. En este caso para agregar a favoritos hay que darle click al boton con la Estrella favorito y para quitarlo de favoritos solo es dandole clic de nuevo al mismo boton.
-![Movies](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/ViewMoviesA.png)
+![Movies](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/ViesualizacionPelicuas.png)
 ### 5- Favoritos
-En este caso hay que primero darle clic a un genero, despues darle clic al boton de favoritos debajo de la pelicula que deseamos agregar a favoritos y por ultimo darle clic al boton favoritos del navbar para que hasta abajo de la pagina se muestren los favoritos.
+En este caso hay que primero darle clic a un genero, despues darle clic al boton de favoritos debajo de la pelicula que deseamos agregar a favoritos y por ultimo darle clic al boton favoritos del lado de cada pelicula y despues ir a la pestana del navbar favoritos donde apareceran los que seleccionaste.
 ![Favorites](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/FavoritosA1.png)
-![Favorites1](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/FavoritosA2.png)
+![Favorites1](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/Favoritos1.png)
 ### 6- Responsive
 En el tema responsive use la consola del navegador y probe la pagina en un dispositivo Pixel 7 y un Ipad.
 ![Responsive](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/ResponsiveCelA.png)
 ![Responsive1](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/ResponsiveIpadA.png)
+### 7- RXJS & Implementacion asincronos
+![RXJS](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/RXJSyAsincronismo.png)
+### 8- Testing code coverage
+![CC1](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/TestHTML.png)
+![CC2](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/KarmaTest1.png)
 
 ---
 
 
 ## Proceso que seguiste para hacerlo
-El proceso que hice fue primero actualice mi MockUp se me ocurrieron algunas mejoras que pude hacerle a la estructura de la pagina, donde anote todos los errores que me salieron en la migracion, solucionaba 1 error y salian 3 mas, definitvamente es algo tedioso y estresante, por el conocimiento que se hay que tener para migrar de Angular como de Js, hubo funcionalidades que me salio mejor rehacerlas ya que typescript no permitia algunas malas practicas al hacer funciones y obliga Typarlas. Despues me asegure de cumplir con los requerimientos por pasos, dividi las tareas por dias es decir, migrar dia 1 y 2, terminar login dia 3 , terminar funcionalidades 4 y asi consecutivamente. Despues hice la estructura de carpetas y cree los componentes, services, data, interfaces. Despues empece a migrar archivo por archivo y por ultimo implemente las imagenes y las optimice para que pesaran menos ya que uso muchas en mi repo y proyecto por el momento ya que no implemente una API.
+El proceso de este sprint lo senti un poco mas diferente, ya que tuve que dedicar mas tiempo a la documentacion y investigacion, porque al principio conceptos de hilo principal, asincronismo y el RXJS es algo confuso al inicio al igual como el unit testing. Para lo del testing me base principalmente en lo que nos enseno el challenger en las clases y dentro de lo que cabe pude realizarlo de buena forma con algunas complicaciones pero cumpli con los objetivo. Para el asincronismo el proceso fue empece importando Rxjs y lo que iba a utilizar en este caso el Observable, despues cree el observable con retraso la funcion getMoviesObservable con un return que hacia el retraso 1 segundo y despues me suscribia y manejaba el estado de la funcion con isLoading=true , .suscribe({}) y isLoading=true en este caso simule la espera de la carga de la API para recibir la informacion ya que es un uso comun para aplicar y entender el concepto de hilos asincronos muestro un texto de "cargando peliculas" y despues las muestro para no dejar al usuario esperando mucho tiempo.
 
 ## Tabla de sprint review
 | Sprint | ¿Qué salió bien? | ¿Qué no salió bien? | ¿Qué puedo mejorar? |
 |--------|------------------|---------------------|---------------------|
-|Sprint 2|La estructura de carpetas y organizacion de archivos, la migracion a Angular 18 y seguimiento del Mockup. | Detallado de los disenos del SCSS, gestion del tiempo en tareas ya que me ponia dia o horas en especifico pero a veces salen cosas que no controlo como errores. | Mejorar definitivamente el diseno y los espacios que abarca cada section, entender mas angular ya que es algo complejo entender del todo Interfaces, componentes, anticiparme a los errores inesperados por la perdida de tiempo.|
+|Sprint 3|Logre los objetivos marcados por el challenger y siento que termine de comprender los conceptos de asincronia y las bases de testing. | Siento que tardo un poco mas de mi tiempo estimado lo que me hace a veces dejar algunas cosas en el backlog. | Me gustaria aprender sobre buenas practicas y buen uso de frameworks como angular asi como metricas de seguridad.|
 
 
