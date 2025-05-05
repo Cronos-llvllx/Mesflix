@@ -1,4 +1,3 @@
-// src/app/interfaces/genre.interface.ts
 export interface Genre {
   id: string | number; // Identificador único para el género
   name: string;        // Nombre a mostrar

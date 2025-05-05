@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TmdbService } from '../../services/tmdb.service';
+//import { TmdbService } from '../../services/tmdb.service';
 import { CommonModule, NgClass } from '@angular/common';
 import { Router } from '@angular/router'; // Si quieres navegar después
 import { Genre } from '../../interface/genre';

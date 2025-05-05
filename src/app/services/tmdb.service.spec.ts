@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TmdbService } from './tmdb.service';
 
 describe('TmdbService', () => {
@@ -10,7 +9,7 @@ describe('TmdbService', () => {
     service = TestBed.inject(TmdbService);
   });
 
-  it('should be created', () => {
+  it('deberia crear', () => {
     expect(service).toBeTruthy();
   });
 });

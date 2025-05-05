@@ -1,11 +1,10 @@
+$bg-color: #141414; // Off-black (el mismo que usamos antes)
+$shape-bg-color: #2E2E2E; // Gris oscuro para las formas
+$shape-bg-hover: #404040; // Gris un poco más claro para hover
+$text-color: #E0E0E0; // Off-white / Gris muy claro para texto
+$text-color-hover: #FFFFFF; // Blanco puro SÓLO para hover si queremos más contraste
 
-  $bg-color: #141414; // Off-black (el mismo que usamos antes)
-  $shape-bg-color: #2E2E2E; // Gris oscuro para las formas
-  $shape-bg-hover: #404040; // Gris un poco más claro para hover
-  $text-color: #E0E0E0; // Off-white / Gris muy claro para texto
-  $text-color-hover: #FFFFFF; // Blanco puro SÓLO para hover si queremos más contraste
-
-  // Variables de tamaño (ajusta según necesites)
+  // Variables de tamaño (se puede ajustar)
   $size-s: 100px;
   $size-m: 140px;
   $size-l: 220px;
@@ -35,10 +34,10 @@
     padding: 20px; // Espacio interno del grid
   }
 
-  // Contenedor individual para cada género (opcional, para espaciado extra si es necesario)
-  .genre-item {
+  // Contenedor individual para cada género
+  //.genre-item {
     // Podríamos añadir perspectiva aquí si la animación hover fuera 3D
-  }
+  //}
 
   // Estilos base para TODAS las formas de género
   .genre-shape {
@@ -78,7 +77,7 @@
       clip-path: polygon(50% 0%, 95% 35%, 85% 90%, 50% 100%, 15% 90%, 5% 35%);
     }
 
-    // Hexágono Alto (Drama) - ¡Ajusta los puntos!
+    // Hexágono Alto (Drama)
     &.genre-tall-hexagon {
       width: $size-m * 0.8; // Más estrecho
       height: $size-m * 1.1; // Más alto
@@ -87,11 +86,11 @@
 
     // --- Animación Hover ---
     &:hover {
-      transform: scale(1.1); // Hacer un 10% más grande
-      background-color: $shape-bg-hover; // Cambiar ligeramente el fondo
-      z-index: 10; // Asegurar que se ponga por encima de otros al agrandarse
+      transform: scale(1.1); // Hace un 10% más grande
+      background-color: $shape-bg-hover; // Cambia ligeramente el fondo
+      z-index: 10; // Asegura que se ponga por encima de otros al agrandarse
       .genre-name {
-        color: $text-color-hover; // Opcional: cambiar color de texto
+        color: $text-color-hover; //cambia color de texto
       }
     }
   }

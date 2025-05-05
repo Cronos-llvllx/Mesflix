@@ -1,6 +1,6 @@
 import { Movie } from './../interface/movie';
 import { Injectable } from '@angular/core';
-// Importa tu interfaz
+// Importar interfaz
 
 @Injectable({
   providedIn: 'root'

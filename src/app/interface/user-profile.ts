@@ -6,5 +6,4 @@ export interface UserProfile {
   //password: string;
   //isAdult: boolean;
   //isKid: boolean;
-
 }

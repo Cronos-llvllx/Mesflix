@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserSelectionComponent } from './user-selection.component';
 
 describe('UserSelectionComponent', () => {
@@ -17,7 +16,7 @@ describe('UserSelectionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('deberia crear', () => {
     expect(component).toBeTruthy();
   });
 });

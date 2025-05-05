@@ -1,46 +1,64 @@
   <div class="genre-movies-container">
-    <h2 *ngIf="genreTitle">{{ genreTitle }}</h2> <div class="movie-list">
-      <div *ngFor="let movie of movies"
-          class="movie-item-wrapper"
-          (click)="viewMovieDetails(movie)"> <div *ngIf="movie.isNew" class="movie-item is-new">
-          <div class="movie-info">
-            <h3 class="movie-title">{{ movie.title }}</h3>
-            <p class="movie-desc">{{ movie.description }}</p>
-            <div class="movie-actions">
-              <button class="btn btn-watch" (click)="watchMovie(movie, $event)">Ver</button>
-              <button class="btn btn-hide" (click)="hideMovie(movie, $event)">Ocultar</button>
-            </div>
-          </div>
-          <div class="movie-poster">
-            <img [src]="movie.imageUrl" [alt]="movie.title">
-          </div>
-        </div>
+    <h2 *ngIf="genreTitle">{{ genreTitle }}</h2>
 
-        <div *ngIf="!movie.isNew" class="movie-item is-standard">
-          <div class="movie-poster">
-            <img [src]="movie.imageUrl" [alt]="movie.title">
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">{{ movie.title }}</h3>
-            <p class="movie-desc">{{ movie.description }}</p>
-          </div>
-          <div class="movie-actions">
-            <button class="btn btn-watch" (click)="watchMovie(movie, $event)">Ver</button>
-            <button class="btn btn-hide" (click)="hideMovie(movie, $event)">Ocultar</button>
-            <button
-              class="btn btn-favorite"
-              [class.is-favorite]="isFavorite(movie)"
-              (click)="toggleFavorite(movie, $event)"
-              title="{{ isFavorite(movie) ? 'Quitar de favoritos' : 'Añadir a favoritos' }}">
-              {{ isFavorite(movie) ? '★ Favorito' : '☆ Favoritos' }} </button>
-          </div>
-        </div>
-
+    <div *ngIf="isLoading" class="loading-indicator">
+      <p>Cargando películas...</p>
       </div>
-    </div>
 
-    <p *ngIf="movies.length === 0">
-      No hay películas para mostrar en este género por el momento.
-    </p>
+    <div *ngIf="!isLoading">
 
-  </div>
+      <div class="movie-list" *ngIf="movies.length > 0; else noMoviesFound">
+        <div *ngFor="let movie of movies"
+            class="movie-item-wrapper"
+            (click)="viewMovieDetails(movie)">
+            <div *ngIf="movie.isNew" class="movie-item is-new">
+              <div class="movie-info">
+                    <h3 class="movie-title">{{ movie.title }}</h3>
+                    <p class="movie-desc">{{ movie.description }}</p>
+                    <div class="movie-actions">
+                        <button class="btn btn-watch" (click)="watchMovie(movie, $event)">Ver</button>
+                        <button class="btn btn-hide" (click)="hideMovie(movie, $event)">Ocultar</button>
+                        <button
+                          class="btn btn-favorite"
+                          [class.is-favorite]="isFavorite(movie)"
+                          (click)="toggleFavorite(movie, $event)"
+                          title="{{ isFavorite(movie) ? 'Quitar de favoritos' : 'Añadir a favoritos' }}">
+                          {{ isFavorite(movie) ? '★ Favorito' : '☆ Favoritos' }}
+                        </button>
+                    </div>
+                </div>
+                <div class="movie-poster">
+                  <img [src]="movie.imageUrl" [alt]="movie.title">
+                </div>
+            </div>
+
+            <div *ngIf="!movie.isNew" class="movie-item is-standard">
+              <div class="movie-poster">
+                <img [src]="movie.imageUrl" [alt]="movie.title">
+              </div>
+              <div class="movie-info">
+                <h3 class="movie-title">{{ movie.title }}</h3>
+                <p class="movie-desc">{{ movie.description }}</p>
+              </div>
+              <div class="movie-actions">
+                <button class="btn btn-watch" (click)="watchMovie(movie, $event)">Ver</button>
+                <button class="btn btn-hide" (click)="hideMovie(movie, $event)">Ocultar</button>
+                <button
+                  class="btn btn-favorite"
+                  [class.is-favorite]="isFavorite(movie)"
+                  (click)="toggleFavorite(movie, $event)"
+                  title="{{ isFavorite(movie) ? 'Quitar de favoritos' : 'Añadir a favoritos' }}">
+                  {{ isFavorite(movie) ? '★ Favorito' : '☆ Favoritos' }}
+                </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <ng-template #noMoviesFound>
+        <p class="empty-message">
+          No se encontraron películas para este género.
+        </p>
+      </ng-template>
+
+    </div> </div>

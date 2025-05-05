@@ -1,15 +1,10 @@
-//@tailwind base;
-//@tailwind components;
-//@tailwind utilities;
-/* src/app/pages/login/login.component.scss */
-
 // Estilo para el contenedor del formulario si es necesario
 form {
   margin-top: 20px; // Espacio después del título H2
   text-align: center; // Centrar elementos inline como el texto social
 }
 
-// Título del formulario (ya centrado por el contenedor padre, pero podemos ajustar)
+// Título del formulario (ya centrado por el contenedor padre)
 h2 {
   margin-bottom: 25px;
   color: #333;

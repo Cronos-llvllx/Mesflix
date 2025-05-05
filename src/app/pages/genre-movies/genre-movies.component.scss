@@ -1,4 +1,3 @@
-// src/app/pages/genre-movies/genre-movies.component.scss
 $text-color: #e0e0e0;
 $secondary-text-color: #a0a0a0;
 $card-bg: #1f1f1f; // Un gris un poco más claro que el fondo general
@@ -7,7 +6,7 @@ $button-hover-bg: #555;
 $new-item-scale: 1.02; // Ligeramente más grande el item nuevo
 
 .genre-movies-container {
-  padding: 20px 4%; // Padding consistente con navbar/footer
+  padding: 40px 4%; // Padding consistente con navbar/footer
   color: $text-color;
 
   h2 {
@@ -137,27 +136,28 @@ $new-item-scale: 1.02; // Ligeramente más grande el item nuevo
   }
   // Estilos específicos si quieres diferenciar "Ver" de "Ocultar"
   .btn-watch { background-color: green; }
-  .btn-hide { background-color: $button-bg; }
-}
-.btn-favorite {
-  background-color: transparent; // Fondo transparente inicialmente
-  border: 1px solid $secondary-text-color; // Borde gris
-  color: $secondary-text-color;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1); // Ligero fondo blanco en hover
-    border-color: $text-color;
-    color: $text-color;
-  }
-
-  // Estilo cuando SÍ es favorito
-  &.is-favorite {
-    background-color: rgba(229, 9, 20, 0.2); // Fondo rojo semitransparente (tipo Netflix)
-    border-color: rgba(229, 9, 20, 0.8); // Borde rojo
-    color: #e50914; // Texto/icono rojo
+  .btn-hide { background-color: rgb(197, 36, 36); }
+  .btn-favorite {
+    background-color: transparent; // Fondo transparente inicialmente
+    border: 1px solid $secondary-text-color; // Borde gris
+    color: $secondary-text-color;
 
     &:hover {
-      background-color: rgba(229, 9, 20, 0.3);
+      background-color: rgba(255, 255, 255, 0.1); // Ligero fondo blanco en hover
+      border-color: $text-color;
+      color: $text-color;
+    }
+
+    // Estilo cuando SÍ es favorito
+    &.is-favorite {
+      background-color: rgba(25, 88, 224, 0.2); // Fondo azul semitransparente (tipo Netflix)
+      border-color: rgba(35, 41, 232, 0.8); // Borde azul
+      color: $text-color; // Texto/icono rojo
+
+      &:hover {
+        background-color: rgba(75, 21, 224, 0.3);
+      }
     }
   }
+
 }

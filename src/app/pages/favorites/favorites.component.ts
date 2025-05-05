@@ -1,15 +1,14 @@
   import { Component, OnInit } from '@angular/core';
-  import { CommonModule, NgClass } from '@angular/common'; // Importa CommonModule/NgClass
-  import { RouterModule } from '@angular/router'; // Para routerLink si es necesario
+  import { CommonModule, NgClass } from '@angular/common';
+  import { RouterModule } from '@angular/router';
   import { Movie } from '../../interface/movie';
   import { FavoritesService } from '../../services/favorites.service';
-  // Importa o define tu lista "maestra" simulada de películas aquí
-  import { SIMULATED_MOVIES } from '../../data/simulated-movies';// <- ¡IMPORTANTE! Necesitamos esta lista
+  import { SIMULATED_MOVIES } from '../../data/simulated-movies';
 
   @Component({
     selector: 'app-favorites',
     standalone: true,
-    imports: [ CommonModule, NgClass, RouterModule ], // Añade los imports necesarios
+    imports: [ CommonModule, NgClass, RouterModule ],
     templateUrl: './favorites.component.html',
     styleUrls: ['./favorites.component.scss']
   })

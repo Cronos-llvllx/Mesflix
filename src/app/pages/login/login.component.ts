@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Router } from '@angular/router'; // Si quieres navegar después
 import { FormsModule } from '@angular/forms'; // Para [(ngModel)]

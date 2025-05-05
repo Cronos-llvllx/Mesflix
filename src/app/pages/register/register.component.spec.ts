@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RegisterComponent } from './register.component';
 
 describe('RegisterComponent', () => {
@@ -17,7 +16,7 @@ describe('RegisterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('deberia crear', () => {
     expect(component).toBeTruthy();
   });
 });

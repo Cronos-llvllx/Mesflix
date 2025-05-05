@@ -1,4 +1,3 @@
-// src/app/components/footer/footer.component.ts
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router'; // Importa RouterModule para routerLink y routerLinkActive
 
