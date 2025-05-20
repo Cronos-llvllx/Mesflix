@@ -1,0 +1,35 @@
+obj/
+bin/
+*.csproj.user
+*.suo
+*.user
+*.sln.docstates
+*.cache
+*.resharper*
+_ReSharper*/
+*.DotSettings.user
+
+# Archivos de configuración local
+appsettings.Development.json
+appsettings.json
+
+# Archivos de usuario
+*.vs/
+.vs/
+*.vssscc
+*.vsscc
+*.pidb
+*.svd
+*.log
+
+# Paquetes NuGet
+/packages/
+*.nupkg
+
+# Otros
+/TestResults/
+/publish/
+/Properties/PublishProfiles/
+*.swp
+*.DS_Store
+Thumbs.db

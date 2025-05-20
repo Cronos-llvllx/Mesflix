@@ -1,0 +1,6 @@
+@ApiMesflix_HostAddress = http://localhost:5268
+
+GET {{ApiMesflix_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

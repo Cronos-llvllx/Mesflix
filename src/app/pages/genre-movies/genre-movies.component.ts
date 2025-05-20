@@ -47,10 +47,9 @@ import { SIMULATED_MOVIES } from '../../data/simulated-movies'; // Importa la li
         this.movies = []; // Opcional: Limpiar películas anteriores mientras carga
 
         // Llama al método que DEVUELVE el Observable
-        this.getMoviesObservable().subscribe({
-          next: (loadedMovies) => {
+        this.getMoviesObservable().subscribe({ // Suscribe al Observable (RXJS)
+          next: (loadedMovies) => { // Callback cuando llegan los datos(asincrono)
             this.movies = loadedMovies; // <-- Asigna las películas cuando llegan
-            // this.isLoading = false; // Ya lo hacemos en 'finalize' o 'tap'
             console.log('Películas cargadas (simulado con delay)');
           },
           error: (err) => {
