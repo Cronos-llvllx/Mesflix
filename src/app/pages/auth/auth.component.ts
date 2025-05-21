@@ -1,27 +1,17 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { LoginComponent } from '../login/login.component';
-import { RegisterComponent } from '../register/register.component';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router'; // Importaciones necesarias para el template
+import { CommonModule } from '@angular/common'; // Para ngIf, ngClass si los usaras (no en este template simplificado)
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [
-    CommonModule, // Necesario para *ngIf
-    LoginComponent,
-    RegisterComponent
-  ],
+  // LoginComponent y RegisterComponent ya no se importan ni se usan directamente aquí
+  // Se cargan a través del <router-outlet>
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss'
+  styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
-  isLoginView: boolean = true; // Por defecto mostramos Login
-
-  showLogin() {
-    this.isLoginView = true;
-  }
-
-  showRegister() {
-    this.isLoginView = false;
-  }
+  // Ya no necesitas la lógica de isLoginView, showLogin o showRegister
+  constructor() { }
 }

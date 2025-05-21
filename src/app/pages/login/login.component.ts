@@ -1,62 +1,72 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Si quieres navegar después
-import { FormsModule } from '@angular/forms'; // Para [(ngModel)]
-import { CommonModule } from '@angular/common'; // Para [ngClass], *ngIf
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core'; // OnInit añadido
+import { Router } from '@angular/router';
+// Importaciones para Formularios Reactivos
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Para *ngIf, etc.
+// Importa tu AuthService y la interfaz UserLoginPayload
+import { AuthService } from '../../services/auth.service'; // Ajusta la ruta si tu estructura es diferente
+import { UserLoginPayload } from '../../interface/user-login-payload.interface'; // Ajusta la ruta
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule], // <--- Estos imports solo son validos con standalone true
+  // Cambiamos FormsModule por ReactiveFormsModule
+  imports: [ReactiveFormsModule, CommonModule, /* RouterModule podría no ser necesario aquí si la navegación es por código */],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss'] // Corregido a styleUrls (array)
 })
-export class LoginComponent {
-    // --- Inyecta Router en el constructor ---
-    constructor(private router: Router) {}
+export class LoginComponent implements OnInit { // Implementamos OnInit
+  loginForm!: FormGroup; // '!' para indicar que se inicializará (en ngOnInit)
+  errorMessage: string | null = null;
+  isLoading: boolean = false;
 
-    // --- Método que se llamará al enviar el formulario ---
-    onLogin(): void {
-      console.log('Formulario enviado!'); // Para verificar en la consola
+  constructor(
+    private router: Router,
+    private fb: FormBuilder, // Inyectamos FormBuilder
+    private authService: AuthService // Inyectamos AuthService
+  ) {}
 
-      // Simulación: Siempre navega a la selección de usuario
-      // Más adelante, aquí validarías credenciales ANTES de navegar
-      this.router.navigate(['/select-user']);
+  ngOnInit(): void {
+    // Inicializamos el formulario reactivo
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]], // Campo para email
+      password: ['', Validators.required]
+    });
+  }
+
+  // Método que se llamará al enviar el formulario desde el HTML
+  // (antes se llamaba onLogin, lo cambiamos a onSubmit para consistencia con el HTML que te di)
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, ingresa un email y contraseña válidos.';
+      this.loginForm.markAllAsTouched(); // Muestra errores de validación si los campos no se tocaron
+      return;
     }
-  // Variables para el formulario de login
-  loginUsername: string = '';
-  loginPassword: string = '';
-  // Variables para el formulario de registro
-  registerUsername: string = '';
-  registerEmail: string = '';
-  registerPassword: string = '';
-  // Variable para alternar entre login y registro
-  isLoginActive: boolean = true;
 
-  // Método para simular el login
-  login() {
-    console.log('Login realizado:');
-    console.log('Usuario:', this.loginUsername);
-    console.log('Contraseña:', this.loginPassword);
-    alert('Login simulado con éxito');
-  }
+    this.isLoading = true;
+    this.errorMessage = null;
 
-  // Método para simular el registro
-  register() {
-    console.log('Registro realizado:');
-    console.log('Usuario:', this.registerUsername);
-    console.log('Email:', this.registerEmail);
-    console.log('Contraseña:', this.registerPassword);
-    alert('Registro simulado con éxito');
-  }
+    const payload: UserLoginPayload = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    };
 
-  // Método para activar la vista de registro
-  activateRegister() {
-    this.isLoginActive = false;
-  }
-
-  // Método para activar la vista de login
-  activateLogin() {
-    this.isLoginActive = true;
+    this.authService.login(payload).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        console.log('Login exitoso, respuesta:', response);
+        // El AuthService ya se encarga de guardar el token si la respuesta lo incluye.
+        // Redirigimos al usuario a la página principal o catálogo.
+        this.router.navigate(['/select-user']); // Cambia '/catalog' a tu ruta deseada post-login
+      },
+      error: (error) => {
+        this.isLoading = false;
+        // authService.handleError debería proveer un error.message
+        this.errorMessage = error.message || 'Email o contraseña incorrectos. Por favor, intenta de nuevo.';
+        console.error('Error en el login desde el componente:', error);
+        // Podrías añadir lógica para limpiar el campo de contraseña si quieres
+        // this.loginForm.get('password')?.reset();
+      }
+    });
   }
 }

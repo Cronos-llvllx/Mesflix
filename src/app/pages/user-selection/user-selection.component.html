@@ -1,22 +1,41 @@
-  <div class="user-selection-container">
-
-    <h2>Quien eres?</h2> <div class="profiles-grid"> <div class="profile-diamond-wrapper" *ngFor="let profile of profiles">
-        <div class="profile-diamond"
-            (click)="selectProfile(profile)"
-            [style.background-image]="'url(' + profile.imageUrl + ')'"
-            title="Seleccionar {{ profile.name }}"> <span class="profile-name">{{ profile.name }}</span>
-        </div>
+<div class="user-selection-container">
+  <h2>¿Quién eres?</h2> <div class="profiles-grid">
+    <div class="profile-diamond-wrapper" *ngFor="let profile of profiles">
+      <div class="profile-diamond"
+          (click)="selectProfile(profile)"
+          [style.background-image]="'url(assets/img/' + profile.imageUrl + ')'" title="Seleccionar {{ profile.name }}">
+        <span class="profile-name">{{ profile.name }}</span>
       </div>
-
-      <div class="profile-diamond-wrapper">
-        <div class="profile-diamond add-profile"
-            (click)="createProfile()"
-            title="Crear Nuevo Perfil">
-          <span class="add-icon">+</span>
-          <span class="profile-name">Add Profile</span>
-        </div>
-      </div>
-
     </div>
 
+    <div class="profile-diamond-wrapper">
+      <div class="profile-diamond add-profile"
+          (click)="createProfile()"
+          title="Crear Nuevo Perfil">
+        <span class="add-icon">+</span>
+        <span class="profile-name">Add Profile</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px; padding: 20px; border: 1px solid #555; border-radius: 8px; background-color: #222; color: white; text-align: left;">
+    <h3>Pruebas del Interceptor API</h3>
+    <button (click)="fetchTestData()" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 15px;">
+      Probar Endpoints (Público y Protegido)
+    </button>
+
+    <div *ngIf="publicDataResponse" style="margin-bottom: 10px;">
+      <h4>Respuesta Datos Públicos:</h4>
+      <pre style="background-color: #333; padding: 10px; border-radius: 4px; white-space: pre-wrap;">{{ publicDataResponse | json }}</pre>
+    </div>
+
+    <div *ngIf="protectedDataResponse" style="margin-bottom: 10px;">
+      <h4>Respuesta Datos Protegidos (Interceptor debe haber funcionado):</h4>
+      <pre style="background-color: #333; padding: 10px; border-radius: 4px; white-space: pre-wrap;">{{ protectedDataResponse | json }}</pre>
+    </div>
+
+    <div *ngIf="errorMessage" style="color: #ff6b6b; background-color: #442222; padding: 10px; border-radius: 4px;">
+      <p><strong>Error:</strong> {{ errorMessage }}</p>
+    </div>
+  </div>
   </div>

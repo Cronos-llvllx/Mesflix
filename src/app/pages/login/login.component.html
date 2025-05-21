@@ -1,26 +1,38 @@
 <h2>Ingresa a Mesflix</h2>
-<form (ngSubmit)="onLogin()" class="form-box">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-box">
   <div class="input-group">
-    <label for="user">User</label>
-    <input type="text" id="user" placeholder="Ingresa tu usuario">
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email" placeholder="Ingresa tu email">
+    <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="error-messages">
+      <small *ngIf="loginForm.get('email')?.errors?.['required']">El email es requerido.</small>
+      <small *ngIf="loginForm.get('email')?.errors?.['email']">El formato del email no es válido.</small>
     </div>
+  </div>
 
   <div class="input-group">
     <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+    <input type="password" id="password" formControlName="password" placeholder="Ingresa tu contraseña">
+    <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="error-messages">
+      <small *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es requerida.</small>
     </div>
+  </div>
 
-  <a href="#" class="forgot-password">Olvidaste tu contraseña?</a>
+  <div *ngIf="errorMessage" class="error-messages server-error">
+    {{ errorMessage }}
+  </div>
 
-  <button type="submit" class="login-button">Ingresar</button>
+  <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+  <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+    {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
+  </button>
 
   <div class="social-login">
     <span>o ingresa con alguna red social</span>
     <div class="social-icons">
-          <a href="#"><i class="bx bxl-google"></i></a>
-          <a href="#"><i class="bx bxl-github"></i></a>
-          <a href="#"><i class="bx bxl-twitter"></i></a>
-          <a href="#"><i class="bx bxl-linkedin"></i></a>
+        <a href="#"><i class="bx bxl-google"></i></a>
+        <a href="#"><i class="bx bxl-github"></i></a>
+        <a href="#"><i class="bx bxl-twitter"></i></a>
+        <a href="#"><i class="bx bxl-linkedin"></i></a>
     </div>
   </div>
 </form>

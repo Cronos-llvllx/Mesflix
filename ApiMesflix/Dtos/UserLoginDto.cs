@@ -6,10 +6,10 @@ namespace ApiMesflix.Dtos
   public class UserLoginDto
 {
     [Required]
-    // El usuario podría loguearse con Username o Email
-    public string LoginIdentifier { get; set; } // Podrías tener Username y Email separados
+    // El usuario debe loguearse con Email
+    public required string Email { get; set; }
 
     [Required]
-    public string Password { get; set; }
+    public required string Password { get; set; }
 }
 }

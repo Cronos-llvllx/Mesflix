@@ -1,102 +1,188 @@
+// Paleta y Variables
+$navbar-bg-solid: #141414;
+$navbar-height: 68px;
+$text-color: #e5e5e5;
+$text-hover: #b3b3b3;
+$text-active-strict: #f8f8f8;
+$link-active-weight: 700;
+$max-content-width: 95%;
 
-  // Paleta y Variables
-  $navbar-bg-solid: #141414; // Fondo sólido (off-black)
-  $navbar-height: 68px;
-  $text-color: #e5e5e5; // Off-white principal
-  $text-hover: #b3b3b3; // Gris más oscuro para hover (estilo Netflix)
-  $text-active: #ffffff; // Blanco para link activo (¡evitamos #fff si es estricto, usa $text-color!) -> Ajuste: usaré #f8f8f8
-  $text-active-strict: #f8f8f8; // Casi blanco
-  $link-active-weight: 700;
-  $max-content-width: 95%; // Usar porcentaje para que se adapte mejor
-  :host {
-    display: block; // Ocupa espacio
+:host {
+  display: block;
+}
+
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $navbar-height;
+  z-index: 1000;
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.8) 0%, rgba(20, 20, 20, 0) 100%);
+  transition: background-color 0.4s ease-out;
+
+  &.is-scrolled {
+    background-color: $navbar-bg-solid;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
-  .app-navbar {
-    position: fixed; // Fijo en la parte superior
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: $navbar-height;
-    z-index: 1000; // Por encima de otro contenido
-    // Fondo inicial con degradado para que el texto sea legible
-    background: linear-gradient(to bottom, rgba(20, 20, 20, 0.8) 0%, rgba(20, 20, 20, 0) 100%);
-    transition: background-color 0.4s ease-out; // Transición suave del fondo
-    // Estilo cuando el usuario ha hecho scroll
-    &.is-scrolled {
-      background-color: $navbar-bg-solid;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); // Sombra sutil opcional
+}
+
+.navbar-content {
+  max-width: $max-content-width;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-logo {
+  img {
+    height: 30px;
+    display: block;
+  }
+}
+
+.navbar-links {
+  display: flex;
+  gap: 18px;
+
+  a {
+    color: $text-color;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 5px 0;
+
+    &:hover {
+      color: $text-hover;
+    }
+
+    &.active-link {
+      color: $text-active-strict;
+      font-weight: $link-active-weight;
     }
   }
-  .navbar-content {
-    max-width: $max-content-width;
-    height: 100%;
-    margin: 0 auto; // Centrar contenido
-    padding: 0 2%; // Padding lateral pequeño
-    display: flex;
-    justify-content: space-between; // Separa izq y der
-    align-items: center;
+}
+
+.search-icon-btn {
+  background: none;
+  border: none;
+  color: $text-active-strict;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.user-menu {
+  // Esto es para el contenedor del avatar y el dropdown
+  position: relative; // Para posicionar el dropdown-menu correctamente
+
+  .user-avatar-link { // Esta clase la usaste en tu HTML viejo para el <a> que envolvía el avatar
+    display: block;
+    cursor: pointer; // Si ahora es un botón, el cursor: pointer ya lo tiene el botón
   }
 
-  .navbar-left,
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 20px; // Espacio entre elementos de cada lado
+  .user-avatar {
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
+    display: block;
+    cursor: pointer; // Redundante si el padre ya es clickable y tiene cursor
   }
 
-  .navbar-logo {
-    img {
-      height: 30px; // Ajusta tamaño de tu logo
-      display: block; // Evita espacios extra debajo
+  // Estilos para los botones "Ingresar" y "Registro" (si no están ya en un SCSS global o de auth)
+  // Basado en el HTML "revisado" que te di antes.
+  .nav-button {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.9rem;
+
+    &.login-button {
+      background-color: #e50914; // Rojo Netflix
+      color: white;
+      &:hover {
+        background-color: darken(#e50914, 10%);
+      }
+    }
+    &.register-button {
+      background-color: transparent;
+      border: 1px solid $text-color;
+      color: $text-color;
+      &:hover {
+        background-color: rgba(229, 229, 229, 0.1);
+        border-color: $text-active-strict;
+        color: $text-active-strict;
+      }
     }
   }
 
-  .navbar-links {
+
+  // Estilos para el botón del avatar que abre el menú
+  .user-menu-button { // Esta es la nueva clase para el botón del avatar en el HTML revisado
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     display: flex;
-    gap: 18px;
+    align-items: center;
+
+    i.bx { // Estilo para el ícono de BoxIcons
+      font-size: 32px; // Ajusta según el tamaño de tu ícono
+      color: $text-color;
+      &:hover {
+        color: $text-active-strict;
+      }
+    }
+    img.user-avatar { // Si sigues usando una imagen dentro del botón
+        height: 32px;
+        width: 32px;
+        border-radius: 4px;
+        display: block;
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px); // Un poco debajo del avatar
+    right: 0;
+    background-color: $navbar-bg-solid; // O un color un poco más claro si prefieres
+    border: 1px solid #333; // Borde sutil
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 180px; // Ancho del dropdown
+    z-index: 1001; // Por encima del navbar
+    padding: 8px 0; // Padding vertical interno
 
     a {
+      display: block;
+      padding: 10px 15px;
       color: $text-color;
       text-decoration: none;
       font-size: 0.9rem;
-      font-weight: 500;
-      transition: color 0.2s ease;
-      padding: 5px 0; // Padding vertical para área de clic
+      transition: background-color 0.2s ease, color 0.2s ease;
 
       &:hover {
-        color: $text-hover;
-      }
-
-      &.active-link {
-        color: $text-active-strict; // Casi blanco cuando está activa
-        font-weight: $link-active-weight;
+        background-color: #333; // Un gris más oscuro para hover del item
+        color: $text-active-strict;
       }
     }
   }
-
-  .search-icon-btn {
-    background: none;
-    border: none;
-    color: $text-active-strict; // Icono casi blanco
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  .user-menu {
-    .user-avatar-link {
-      display: block; // Asegura que ocupe su espacio
-    }
-    .user-avatar {
-      height: 32px;
-      width: 32px;
-      border-radius: 4px; // Bordes redondeados
-      display: block;
-      cursor: pointer;
-    }
-  }
+}

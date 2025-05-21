@@ -47,3 +47,15 @@ h2 {
     background-color: #5a72e0;
   }
 }
+.error-messages {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 4px;
+}
+
+.server-error {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid red;
+  background-color: #ffe0e0;
+}

@@ -1,10 +1,11 @@
-
 namespace ApiMesflix.Dtos
 {
   public class UserResponseDto
-  {    public int UserId { get; set; }
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Token { get; set; } // Aquí irá el JWT más adelante
+  {
+    public int UserId { get; set; }
+    public required string FirstName { get; set; } // el alias del perfilk
+    public required string LastName { get; set; }
+    public required string Email { get; set; } //email usado para loguearse
+    public required string Token { get; set; }
   }
-  }
+}

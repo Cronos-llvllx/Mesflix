@@ -25,7 +25,6 @@ public class MesflixDbContext : DbContext
         {
             entity.ToTable("Users"); // Mapea a la tabla Users
             entity.HasKey(e => e.UserId); // Clave primaria
-            entity.HasIndex(e => e.Username).IsUnique();
             entity.HasIndex(e => e.Email).IsUnique();
         });
 

@@ -1,29 +1,40 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Microsoft.EntityFrameworkCore; // Necesario para [Index]
 
 namespace ApiMesflix.Models
 {
-    [Table("Users")] // Asegura que EF Core mapee a la tabla "Users"
+    [Table("Users")]
+    [Index(nameof(Email), IsUnique = true)] // Asegura que el Email sea único a nivel de BD
     public class User
     {
         [Key]
         [Column("UserId")]
         public int UserId { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        [Column("Username")]
-        public string Username { get; set; }
 
         [Required]
         [MaxLength(255)]
         [Column("Email")]
-        public string Email { get; set; }
+        public  required string Email { get; set; }
 
         [Required]
         [Column("PasswordHash")]
-        public string PasswordHash { get; set; }
+        public required string PasswordHash { get; set; }
+
+        [Required]
+        [MaxLength(100)] // Define una longitud máxima apropiada
+        [Column("FirstName")]
+        public required string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(100)] // Define una longitud máxima apropiada
+        [Column("LastName")]
+        public required string LastName { get; set; }
+
+        [Required]
+        [Column("DateOfBirth")]
+        public DateTime DateOfBirth { get; set; } // DateTime es el tipo apropiado aquí
 
         [Required]
         [Column("DateCreated")]

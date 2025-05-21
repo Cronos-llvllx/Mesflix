@@ -8,4 +8,13 @@
   flex-grow: 1; // Hace que el área de contenido principal crezca y empuje el footer hacia abajo
 }
 
-// El 'margin-top: auto;' en .app-footer (footer.component.scss) funciona junto con esto.
+.main-content-wrapper {
+  max-width: 1200px; // Define un ancho máximo para tu contenido. Ajusta este valor.
+                     // Valores comunes son 960px, 1140px, 1200px, 1366px, etc.
+  margin-left: auto;   // Centra el contenedor horizontalmente
+  margin-right: auto;  // Centra el contenedor horizontalmente
+  padding-left: 15px;  // Un poco de padding para que el contenido no toque los bordes
+  padding-right: 15px; // en pantallas más pequeñas que max-width.
+  width: 100%;         // Asegura que ocupe el ancho disponible hasta el max-width
+  box-sizing: border-box; // Para que el padding no se sume al width/max-width
+}

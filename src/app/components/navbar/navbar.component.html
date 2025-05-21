@@ -1,25 +1,34 @@
-  <nav class="app-navbar" [class.is-scrolled]="isScrolled"> <div class="navbar-content">
-
-    <div class="navbar-left">
+<nav class="app-navbar" [ngClass]="{'is-scrolled': isScrolled}"> <div class="navbar-content"> <div class="navbar-left">
       <a routerLink="/catalog" class="navbar-logo" aria-label="Ir al inicio de Mesflix">
-        <img src="LogoMesflixO.jpg" alt="Mesflix Logo">
+        <img src="/LogoMesflixO.jpg" alt="Mesflix Logo">
       </a>
-      <div class="navbar-links">
+      <div class="navbar-links" *ngIf="isLoggedIn">
         <a routerLink="/catalog" routerLinkActive="active-link">Catálogo</a>
         <a routerLink="/favorites" routerLinkActive="active-link">Favoritos</a>
-        <a routerLink="/for-you" routerLinkActive="active-link">Para mi</a>
-      </div>
-    </div>
-    <div class="navbar-right">
-      <button class="search-icon-btn" aria-label="Buscar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      </button>
-
-      <div class="user-menu">
-        <a routerLink="/profile" class="user-avatar-link" aria-label="Perfil de usuario">
-          <img src="UserProfile1.jpg" alt="User Profile" class="user-avatar">
-        </a>
         </div>
     </div>
+
+    <div class="navbar-right">
+      <button class="search-icon-btn" aria-label="Buscar" *ngIf="showSearchBar() && isLoggedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        </button>
+
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/auth/login" class="nav-button login-button">Ingresar</a>
+        <a routerLink="/auth/register" class="nav-button register-button">Registro</a>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <div class="user-menu">
+          <button (click)="toggleUserMenu()" class="user-menu-button" aria-label="Perfil de usuario">
+            <img src="/UserProfile1.jpg" alt="User Profile" class="user-avatar">
+          </button>
+          <div class="dropdown-menu" *ngIf="isUserMenuOpen"> <a routerLink="/profile">Mi Perfil</a>
+            <a (click)="handleLogout()" style="cursor: pointer;">Cerrar Sesión</a>
+          </div>
+        </div>
+      </ng-container>
     </div>
-  </nav>
+
+  </div>
+</nav>

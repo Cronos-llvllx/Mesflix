@@ -17,7 +17,7 @@ namespace ApiMesflix.Models
         [Required]
         [MaxLength(255)]
         [Column("MovieId")]
-        public string MovieId { get; set; } // Coincide con NVARCHAR(255)
+        public required string MovieId { get; set; } // Coincide con NVARCHAR(255)
 
         [Required]
         [Column("DateAdded")]
