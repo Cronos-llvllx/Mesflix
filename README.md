@@ -10,10 +10,11 @@ Mesflix es un servicio de streaming , hecho con HTML, SCSS, TypeScript, Angular 
 
 | Sprint | Requerimientos |
 |--------|-----------------------------------------------|
-| Sprint 1 |  |
-| Sprint 2 |  |
-| Sprint 3 |  |
+| Sprint 1 | con html, css y js vanilla, que sea usable, que tenga login  (simulado), no (angular, react , etc...) , subirlo a GitHub con docs(readme), no clon de netflix, amazon, etc. tomar tamanios en cuenta de pantalla.  |
+| Sprint 2 | Responsividad, Migrar a Angular, TypeScript, concluir funcionalidades del menu que estan creados.  |
+| Sprint 3 | Responsividad, Performance, Implementacion de asincronos, RXJS , Testing |
 | Sprint 4 Base de datos | Seguridad en el login, Login con BD, Implementar lazy loading, Uso de T-SQL en la base de datos, Implementación y consumo de la BD |
+| Sprint 5 C# | API en ASP.net o net core -MVC , conexion con el proyecto de angular, implementacion de login con backend, manejo de cors implementado, un solo repo, documentacion completa co swagger, mejoras a consideracion propia. |
 
 ## Tecnologías utilizadas
 
@@ -209,7 +210,7 @@ Se ha implementado Lazy Loading para el módulo de autenticación. Esto signific
 
   Verificación:
     * Al cargar la aplicación inicialmente, el "chunk" de JavaScript correspondiente a las rutas de autenticación (ej. `chunk-auth-routes.js` o similar) no se descarga.
-    * Este chunk se descarga y se ejecuta solo cuando se navega a una ruta bajo `/auth`. Esto se puede observar en la pestaña "Network" de las herramientas de desarrollador del navegador. (Puedes incluir una captura de pantalla de la pestaña Network mostrando la carga del chunk si lo deseas, como `image_f2973b.png`).
+    * Este chunk se descarga y se ejecuta solo cuando se navega a una ruta bajo `/auth`. Esto se puede observar en la pestaña "Network" de las herramientas de desarrollador del navegador. (Puedes incluir una captura de pantalla de la pestaña Network mostrando la carga del chunk.).
 
 ---
 
