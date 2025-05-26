@@ -1,103 +1,191 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // Necesario porque el componente lo importa
-import { LoginComponent } from './login.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Observable, of, throwError } from 'rxjs';
 
-// --- Mock de Servicios ---
+import { LoginComponent } from './login.component';
+import { AuthService } from '../../services/auth.service';
+import { UserLoginPayload } from '../../interface/user-login-payload.interface';
+import { AuthResponse } from '../../interface/auth-response.interface'; // Importar la interfaz AuthResponse
+
+/// --- Mock de Servicios ---
 class MockRouter {
-  navigate = jasmine.createSpy('navigate'); // Espía para ver si/cómo se llama a navigate
+  navigate = jasmine.createSpy('navigate');
+}
+
+// Mock para AuthService
+class MockAuthService {
+  login(payload: UserLoginPayload): Observable<AuthResponse> {
+    if (payload.email === 'test@example.com' && payload.password === 'password123') {
+      // CORRECCIÓN AQUÍ: Devolver un objeto que coincida con AuthResponse
+      return of({
+        userId: 1,
+        username: 'testuser',
+        email: payload.email, // o un email de prueba si prefieres
+        token: 'fake-jwt-token'
+      });
+    }
+    // Para los errores, la estructura suele ser { message: string } o un HttpErrorResponse,
+    // lo cual está bien porque el componente maneja el error de forma diferente.
+    return throwError(() => ({ message: 'Email o contraseña incorrectos.' }));
+  }
 }
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let router: MockRouter; // Instancia del mock Router
+  let mockRouter: MockRouter;
+  let mockAuthService: MockAuthService;
 
   beforeEach(async () => {
+    mockRouter = new MockRouter();
+    mockAuthService = new MockAuthService();
+
     await TestBed.configureTestingModule({
-      // Importa el componente Standalone y los módulos que él importa
-      imports: [ LoginComponent, FormsModule ],
+      imports: [
+        LoginComponent,
+      ],
       providers: [
-        // Proveedor del Mock para el Router
-        { provide: Router, useClass: MockRouter }
-        // No necesitamos mock de AuthService porque el componente no lo inyecta
+        { provide: Router, useValue: mockRouter },
+        { provide: AuthService, useValue: mockAuthService }
       ]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router) as unknown as MockRouter; // Obtener instancia del mock
-
-    // Espiar alert globalmente para las pruebas que lo usan
-    spyOn(window, 'alert');
-    // Espiar console.log globalmente para verificar logs
-    spyOn(console, 'log');
-
-    // fixture.detectChanges(); // Llamar en cada test si es necesario
   });
 
-  it('debería crear', () => {
-    fixture.detectChanges(); // Ejecuta el ciclo de vida inicial
+  it('debería crear el componente', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  // --- Prueba para onLogin() ---
-  it('onLogin() debería registrar el mensaje y navegar a /select-user', () => {
-    component.onLogin(); // Llama al método
-
-    // Verifica el log
-    expect(console.log).toHaveBeenCalledWith('Formulario enviado!');
-    // Verifica la navegación
-    expect(router.navigate).toHaveBeenCalledWith(['/select-user']);
+  it('debería inicializar loginForm en ngOnInit', () => {
+    fixture.detectChanges();
+    expect(component.loginForm).toBeDefined();
+    expect(component.loginForm.get('email')).toBeDefined();
+    expect(component.loginForm.get('password')).toBeDefined();
   });
 
-  // --- Prueba para login() ---
-  it('login() debe registrar las credenciales y mostrar una alerta', () => {
-    // Establece manualmente las propiedades que el método usa
-    component.loginUsername = 'testUser';
-    component.loginPassword = 'testPassword';
+  it('el campo email debería ser inválido si está vacío y válido con un email correcto', () => {
+    fixture.detectChanges();
+    const emailControl = component.loginForm.get('email');
 
-    component.login(); // Llama al método
+    emailControl?.setValue('');
+    expect(emailControl?.invalid).toBeTrue();
+    expect(emailControl?.hasError('required')).toBeTrue();
 
-    // Verifica los logs
-    expect(console.log).toHaveBeenCalledWith('Login realizado:');
-    expect(console.log).toHaveBeenCalledWith('Usuario:', 'testUser');
-    expect(console.log).toHaveBeenCalledWith('Contraseña:', 'testPassword');
-    // Verifica la alerta
-    expect(window.alert).toHaveBeenCalledWith('Login simulado con éxito');
+    emailControl?.setValue('test');
+    expect(emailControl?.invalid).toBeTrue();
+    expect(emailControl?.hasError('email')).toBeTrue();
+
+    emailControl?.setValue('test@example.com');
+    expect(emailControl?.valid).toBeTrue();
   });
 
-  // --- Prueba para register() ---
-  it('register() debe registrar los datos de registro y mostrar una alerta', () => {
-    // Establece manualmente las propiedades que el método usa
-    component.registerUsername = 'newUser';
-    component.registerEmail = 'new@mail.com';
-    component.registerPassword = 'newPassword';
+  it('el campo password debería ser inválido si está vacío y válido si tiene valor', () => {
+    fixture.detectChanges();
+    const passwordControl = component.loginForm.get('password');
 
-    component.register(); // Llama al método
+    passwordControl?.setValue('');
+    expect(passwordControl?.invalid).toBeTrue();
+    expect(passwordControl?.hasError('required')).toBeTrue();
 
-    // Verifica los logs
-    expect(console.log).toHaveBeenCalledWith('Registro realizado:');
-    expect(console.log).toHaveBeenCalledWith('Usuario:', 'newUser');
-    expect(console.log).toHaveBeenCalledWith('Email:', 'new@mail.com');
-    expect(console.log).toHaveBeenCalledWith('Contraseña:', 'newPassword');
-    // Verifica la alerta
-    expect(window.alert).toHaveBeenCalledWith('Registro simulado con éxito');
+    passwordControl?.setValue('password123');
+    expect(passwordControl?.valid).toBeTrue();
   });
 
-  // --- Prueba para activateRegister() ---
-  it('activateRegister() debe establecer isLoginActive en falso', () => {
-    component.isLoginActive = true; // Estado inicial asegurado
-    component.activateRegister(); // Llama al método
-    expect(component.isLoginActive).toBeFalse(); // Verifica el cambio de estado
-  });
+  describe('onSubmit', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
 
-  // --- Prueba para activateLogin() ---
-  it('activateLogin() debe establecer isLoginActive en verdadero', () => {
-    component.isLoginActive = false; // Estado inicial asegurado (opuesto)
-    component.activateLogin(); // Llama al método
-    expect(component.isLoginActive).toBeTrue(); // Verifica el cambio de estado
-  });
+    it('no debería llamar a authService.login si el formulario es inválido', () => {
+      spyOn(mockAuthService, 'login').and.callThrough();
+      component.loginForm.get('email')?.setValue('');
+      component.onSubmit();
 
+      expect(mockAuthService.login).not.toHaveBeenCalled();
+      expect(component.errorMessage).toBe('Por favor, ingresa un email y contraseña válidos.');
+      expect(component.isLoading).toBeFalse();
+    });
+
+    it('debería llamar a authService.login con los datos del formulario si es válido', () => {
+      spyOn(mockAuthService, 'login').and.callThrough();
+      const testEmail = 'test@example.com';
+      const testPassword = 'password123';
+
+      component.loginForm.get('email')?.setValue(testEmail);
+      component.loginForm.get('password')?.setValue(testPassword);
+      component.onSubmit();
+
+      expect(mockAuthService.login).toHaveBeenCalledWith({ email: testEmail, password: testPassword });
+    });
+
+    it('debería establecer isLoading en true mientras se llama a authService.login y luego en false', fakeAsync(() => {
+      // CORRECCIÓN AQUÍ TAMBIÉN: Asegurar que el objeto coincida con AuthResponse
+      spyOn(mockAuthService, 'login').and.returnValue(of({
+        userId: 2,
+        username: 'loadingUser',
+        email: 'test@example.com',
+        token: 'fake-token-for-loading-test'
+      }).pipe());
+      component.loginForm.get('email')?.setValue('test@example.com');
+      component.loginForm.get('password')?.setValue('password123');
+
+      component.onSubmit();
+      expect(component.isLoading).toBeTrue();
+
+      tick();
+      fixture.detectChanges();
+
+      expect(component.isLoading).toBeFalse();
+    }));
+
+    it('debería navegar a /select-user en un login exitoso', fakeAsync(() => {
+      const testEmail = 'test@example.com';
+      const testPassword = 'password123';
+      component.loginForm.get('email')?.setValue(testEmail);
+      component.loginForm.get('password')?.setValue(testPassword);
+
+      component.onSubmit();
+      tick();
+      fixture.detectChanges();
+
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/select-user']);
+      expect(component.errorMessage).toBeNull();
+    }));
+
+    it('debería mostrar un mensaje de error si authService.login falla', fakeAsync(() => {
+      const incorrectEmail = 'wrong@example.com';
+      const incorrectPassword = 'wrongpassword';
+      component.loginForm.get('email')?.setValue(incorrectEmail);
+      component.loginForm.get('password')?.setValue(incorrectPassword);
+
+      spyOn(mockAuthService, 'login').and.returnValue(throwError(() => ({ message: 'Email o contraseña incorrectos.' })));
+
+      component.onSubmit();
+      tick();
+      fixture.detectChanges();
+
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+      expect(component.errorMessage).toBe('Email o contraseña incorrectos.');
+      expect(component.isLoading).toBeFalse();
+    }));
+
+    it('debería usar el mensaje de error genérico si el error del servicio no tiene .message', fakeAsync(() => {
+      component.loginForm.get('email')?.setValue('test@example.com');
+      component.loginForm.get('password')?.setValue('somepassword');
+
+      spyOn(mockAuthService, 'login').and.returnValue(throwError(() => ({})));
+
+      component.onSubmit();
+      tick();
+      fixture.detectChanges();
+
+      expect(component.errorMessage).toBe('Email o contraseña incorrectos. Por favor, intenta de nuevo.');
+    }));
+  });
 });

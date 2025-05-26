@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Movie } from '../../interface/movie';
 import { FavoritesService } from '../../services/favorites.service';
@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/operators';
 @Component({
   selector: 'app-genre-movies',
   standalone: true,
-  imports: [ CommonModule, NgClass ],
+  imports: [ CommonModule ],
   templateUrl: './genre-movies.component.html',
   styleUrls: ['./genre-movies.component.scss']
 })
