@@ -1,6 +1,6 @@
 <nav class="app-navbar" [ngClass]="{'is-scrolled': isScrolled}"> <div class="navbar-content"> <div class="navbar-left">
       <a routerLink="/catalog" class="navbar-logo" aria-label="Ir al inicio de Mesflix">
-        <img src="/LogoMesflixO.jpg" alt="Mesflix Logo">
+        <img src="/logo.svg" alt="Mesflix Logo">
       </a>
       <div class="navbar-links" *ngIf="isLoggedIn">
         <a routerLink="/catalog" routerLinkActive="active-link">Catálogo</a>
@@ -21,7 +21,7 @@
       <ng-container *ngIf="isLoggedIn">
         <div class="user-menu">
           <button (click)="toggleUserMenu()" class="user-menu-button" aria-label="Perfil de usuario">
-            <img src="/UserProfile1.jpg" alt="User Profile" class="user-avatar">
+            <img src="assets/UserProfile1.jpg" alt="User Profile" class="user-avatar">
           </button>
           <div class="dropdown-menu" *ngIf="isUserMenuOpen"> <a routerLink="/profile">Mi Perfil</a>
             <a (click)="handleLogout()" style="cursor: pointer;">Cerrar Sesión</a>

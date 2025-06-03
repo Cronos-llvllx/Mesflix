@@ -1,9 +1,9 @@
 // Paleta y Variables
-$navbar-bg-solid: #141414;
+$navbar-bg-solid: #db5217;
 $navbar-height: 68px;
 $text-color: #e5e5e5;
 $text-hover: #b3b3b3;
-$text-active-strict: #f8f8f8;
+$text-active-strict: #f8f8f8; 
 $link-active-weight: 700;
 $max-content-width: 95%;
 
@@ -18,7 +18,7 @@ $max-content-width: 95%;
   width: 100%;
   height: $navbar-height;
   z-index: 1000;
-  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.8) 0%, rgba(20, 20, 20, 0) 100%);
+  background: linear-gradient(to bottom, rgba(231, 73, 11, 0.8) 0%, rgba(20, 20, 20, 0) 100%);
   transition: background-color 0.4s ease-out;
 
   &.is-scrolled {
@@ -48,6 +48,7 @@ $max-content-width: 95%;
   img {
     height: 30px;
     display: block;
+    border-radius: 5px;
   }
 }
 

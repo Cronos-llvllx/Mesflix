@@ -1,10 +1,13 @@
-  // Variables (opcional, pero útil)
   $profile-size: 130px; // Tamaño del diamante (ancho y alto)
   $diamond-margin: 20px; // Margen alrededor de cada diamante
-  $text-color: #fff; // Color de texto principal
-  $add-profile-bg: #444; // Fondo para el botón de añadir
+  $text-color: #b0f3e6; // Color de texto principal
+  $add-profile-bg: #ae4343; // Fondo para el botón de añadir
   $hover-border-color: #e50914; // Color de borde al pasar el mouse (rojo Netflix?)
   $background-color: #141414; // Fondo oscuro tipo Netflix
+  $profile-size: 130px; // Tamaño del cuadrado (ancho y alto)
+  $profile-border-width: 3px; // Ancho del borde
+  $profile-border-color: #777; // Color del borde (puedes ajustarlo)
+  $profile-border-hover-color: #d4868a; // Color del borde al pasar el mouse
 
   // Contenedor principal de la página
   .user-selection-container {
@@ -36,36 +39,40 @@
     max-width: 600px; // Limitar el ancho máximo del contenedor de perfiles
   }
 
-  // Wrapper para cada diamante (ayuda con el espaciado)
+  // Wrapper para cada cuadrado (ayuda con el espaciado)
   .profile-diamond-wrapper {
     // Podríamos usar Grid en .profiles-grid para un layout más complejo si es necesario
     // Por ahora, flex con wrap funciona para una lista simple.
     padding: $diamond-margin; // Espacio alrededor para que el hover no se corte
   }
 
-  // El Diamante principal
-  .profile-diamond {
-    width: $profile-size;
-    height: $profile-size;
-    background-color: #333; // Color de fondo por defecto
-    background-size: cover; // Asegura que la imagen cubra el área
-    background-position: center; // Centra la imagen de fondo
-    position: relative; // Necesario para posicionar el nombre dentro
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex; // Para centrar el contenido interno
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden; // Ocultar partes de la imagen/contenido que se salgan del clip-path
+// El Cuadrado del Perfil
+.profile-box { 
+  width: $profile-size;
+  height: $profile-size;
+  background-color: #333; // Color de fondo por defecto si no hay imagen
+  background-size: cover; // Asegura que la imagen cubra el área
+  background-position: center; // Centra la imagen de fondo
+  position: relative; // Necesario para posicionar el nombre dentro
+  cursor: pointer;
+  border: $profile-border-width solid $profile-border-color; // Borde inicial
+  border-radius: 10px;
+  box-sizing: border-box; // Para que el borde no aumente el tamaño total del div
+  transition: transform 0.3s ease, border-color 0.3s ease; // Transición para hover
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  // overflow: hidden; // Ya no es necesario clip-path, pero puede ser útil si el contenido interno se desborda
 
     // --- La magia del Diamante con clip-path ---
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    //clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 
     // Efecto al pasar el mouse (hover)
     &:hover {
       transform: scale(1.1); // Agrandar ligeramente
+      border-color: $profile-border-hover-color;
       // Añadir un borde simulado o sombra puede ser complicado con clip-path,
       // podríamos usar un pseudo-elemento o un wrapper si es necesario un borde visible.
       // Una sombra podría funcionar:

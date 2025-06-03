@@ -18,7 +18,7 @@ export class UserSelectionComponent implements OnInit { // Implementa OnInit
   errorMessage: string | null = null;
 
   profiles: UserProfile[] = [
-    { id: 1, name: 'Usuario Principal', imageUrl: 'UserProfile1.jpg' },
+    { id: 1, name: 'Dan', imageUrl: 'UserProfile1.jpg' },
     { id: 2, name: 'Niños', imageUrl: 'AddProfile.jpg' },
     { id: 'guest', name: 'Invitado', imageUrl: 'Guest.jpg' }
   ];

@@ -1,103 +1,119 @@
 $text-color: #e0e0e0;
 $secondary-text-color: #a0a0a0;
-$card-bg: #1f1f1f; // Un gris un poco más claro que el fondo general
+$card-bg: #1f1f1f;
 $button-bg: #444;
 $button-hover-bg: #555;
-$new-item-scale: 1.02; // Ligeramente más grande el item nuevo
+$background-color: #141414; // Color de fondo general de la página
 
-* {
+$navbar-height: 68px; // Ajusta esto a la altura real de tu navbar
+$footer-height: 100px; // Ajusta esto a la altura real de tu footer
+$container-padding-vertical: 20px;
+$container-padding-horizontal: 4%;
+
+// Contenedor principal de la página de Favoritos
+.favorites-container {
+  background-color: $background-color;
   color: $text-color;
-}
-.genre-movies-container {
-  padding: 20px 4%; // Padding consistente con navbar/footer
-  color: $text-color;
+  padding-top: $container-padding-vertical;
+  padding-bottom: $container-padding-vertical;
+  padding-left: $container-padding-horizontal;
+  padding-right: $container-padding-horizontal;
+  box-sizing: border-box;
+
+  // Para ayudar a empujar el footer hacia abajo.
+  // Esto funciona mejor si .main-content-wrapper en app.component.html tiene flex-grow: 1
+  // y app-root tiene display: flex; flex-direction: column; min-height: 100vh;
+  min-height: calc(100vh - #{$navbar-height} - #{$footer-height});
+  // Si la estructura de app.component es correcta, podrías incluso usar:
+  // flex-grow: 1; // Si favorites-container es un hijo directo de un contenedor flex que debe crecer.
+  // display: flex; // Si necesitas más control flex interno
+  // flex-direction: column; // Si necesitas más control flex interno
 
   h2 {
+    margin-top: 20px; // Espacio adicional desde el inicio del contenedor (o navbar)
     margin-bottom: 30px;
     font-size: 1.8em;
+    text-align: center; // O 'left' si lo prefieres
+    font-weight: bold;
   }
 }
 
+// Indicador de carga
+.loading-indicator {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: $secondary-text-color;
+}
+
+// Mensaje cuando no hay favoritos
+.empty-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1em;
+  color: $secondary-text-color;
+}
+
+// Lista de películas
 .movie-list {
   display: flex;
   flex-direction: column;
   gap: 25px; // Espacio entre películas
 }
 
+// Contenedor de cada película en la lista
 .movie-item-wrapper {
   background-color: $card-bg;
   border-radius: 5px;
-  overflow: hidden; // Asegura que el contenido no se salga del borde redondeado
+  overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    transform: scale(1.015); // Ligero zoom al pasar el mouse sobre toda la tarjeta
+    transform: scale(1.015);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
 }
 
-// Contenedor base para ambos layouts de item
-.movie-item {
+// Estilos para el item de película (layout estándar como en tu HTML)
+.movie-item.is-standard {
   display: flex;
-  align-items: center; // Alinear verticalmente
+  align-items: center;
   padding: 15px;
   gap: 15px;
-}
 
-//Estilos Layout Película NUEVA
-.movie-item.is-new {
-  // Puede que necesitemos un scale extra si queremos que sea más grande
-  // transform: scale($new-item-scale); // Aplicado al wrapper es mejor
+  .movie-poster {
+    flex: 0 0 120px; // Ancho fijo para el poster (ajusta según necesites)
+    width: 120px;
+    img {
+      max-height: 180px; // Limitar altura del poster (ajusta según necesites)
+    }
+  }
 
   .movie-info {
-    flex: 1 1 60%; // Ocupa más espacio
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; // Alinear a la izquierda
   }
-  .movie-poster {
-    flex: 1 1 40%; // Ocupa menos espacio
-    max-width: 300px; // Limitar tamaño máximo de imagen
-    img { max-height: 200px; } // Limitar altura
-  }
-   // Botones uno al lado del otro
+
   .movie-actions {
+    flex-shrink: 0;
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    // Para que los botones estén uno al lado del otro como en tu HTML de favoritos:
+    flex-direction: row;
+    align-items: center; // Alinear botones verticalmente si tienen alturas diferentes
+    gap: 10px; // Espacio entre botones
+    margin-left: 15px;
   }
 }
 
-// Estilos Layout Película ESTÁNDAR
-.movie-item.is-standard {
-  .movie-poster {
-    flex: 0 0 150px; // Ancho fijo para el poster
-    width: 150px; // Asegurar ancho
-    img { max-height: 120px; } // Limitar altura
-  }
-  .movie-info {
-    flex-grow: 1; // Ocupa el espacio restante
-    display: flex;
-    flex-direction: column; // Título arriba, descripción abajo
-  }
-   // Botones al final, quizás alineados a la derecha o centrados verticalmente
-  .movie-actions {
-    flex-shrink: 0; // No se encoge
-    display: flex;
-    flex-direction: column; // Botones uno encima del otro
-    gap: 8px;
-    margin-left: 15px; // Espacio antes de los botones
-  }
-}
-
-// --- Estilos Comunes para elementos internos ---
+// --- Estilos Comunes para elementos internos de la tarjeta de película ---
 .movie-poster {
   img {
     display: block;
     width: 100%;
-    height: auto; // Mantiene proporción
-    object-fit: cover; // Cubre el área sin distorsionar
+    height: auto;
+    object-fit: cover;
     border-radius: 3px;
   }
 }
@@ -112,25 +128,22 @@ $new-item-scale: 1.02; // Ligeramente más grande el item nuevo
 .movie-desc {
   font-size: 0.9em;
   color: $secondary-text-color;
-
   margin: 0;
-  // Limitar número de líneas (opcional)
   display: -webkit-box;
-
   -webkit-line-clamp: 2; // Muestra máximo 2 líneas
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 3em;
+  // max-height: 3em; // Comentado, -webkit-line-clamp suele ser suficiente
   line-height: 1.4em;
 }
 
+// Estilos para los botones de acción
 .movie-actions {
   .btn {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    background-color: $button-bg;
     color: $text-color;
     cursor: pointer;
     font-size: 0.85em;
@@ -140,29 +153,34 @@ $new-item-scale: 1.02; // Ligeramente más grande el item nuevo
       background-color: $button-hover-bg;
     }
   }
-  // Estilos específicos si quieres diferenciar "Ver" de "Ocultar"
-  .btn-watch { background-color: green; }
-  .btn-hide { background-color: $button-bg; }
-}
-.btn-favorite {
-  background-color: transparent; // Fondo transparente inicialmente
-  border: 1px solid $secondary-text-color; // Borde gris
-  color: $secondary-text-color;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1); // Ligero fondo blanco en hover
-    border-color: $text-color;
-    color: $text-color;
+  .btn-watch { // Asumo que quieres un color distintivo para "Ver"
+    background-color: #28a745; // Verde (ejemplo)
+    &:hover {
+      background-color: darken(#28a745, 10%);
+    }
   }
 
-  // Estilo cuando SÍ es favorito
-  &.is-favorite {
-    background-color: rgba(229, 9, 20, 0.2); // Fondo rojo semitransparente (tipo Netflix)
-    border-color: rgba(229, 9, 20, 0.8); // Borde rojo
-    color: #e50914; // Texto/icono rojo
+  .btn-favorite { // Estilo para el botón de favorito
+    background-color: transparent;
+    border: 1px solid $secondary-text-color;
+    color: $secondary-text-color;
 
     &:hover {
-      background-color: rgba(229, 9, 20, 0.3);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: $text-color;
+      color: $text-color;
+    }
+
+    // Estilo cuando SÍ es favorito (como en tu HTML)
+    &.is-favorite {
+      background-color: rgba(229, 9, 20, 0.2); // Fondo rojo semitransparente
+      border-color: rgba(229, 9, 20, 0.8); // Borde rojo
+      color: #e50914; // Texto/icono rojo
+
+      &:hover {
+        background-color: rgba(229, 9, 20, 0.3);
+      }
     }
   }
 }

@@ -1,107 +1,144 @@
-$bg-color: #141414; // Off-black (el mismo que usamos antes)
-$shape-bg-color: #2E2E2E; // Gris oscuro para las formas
-$shape-bg-hover: #404040; // Gris un poco más claro para hover
-$text-color: #E0E0E0; // Off-white / Gris muy claro para texto
-$text-color-hover: #FFFFFF; // Blanco puro SÓLO para hover si queremos más contraste
+$bg-color: #141414;
+$card-bg-color: #2E2E2E;
+$card-bg-hover: #404040; // Un poco más claro para hover
+$text-color: #E0E0E0;
+$text-color-hover: #FFFFFF;
+$secondary-text-color: #3bcbdb; // Para textos secundarios o menos importantes
 
-  // Variables de tamaño (se puede ajustar)
-  $size-s: 100px;
-  $size-m: 140px;
-  $size-l: 220px;
+// --- Nuevas variables para los rectángulos ---
+$card-border-width: 3px; // Grosor del borde
+$card-border-color: #555; // Color del borde
+$card-border-hover-color: #3bcbdb; // Color del borde en hover (rojo Mesflix)
+$card-border-radius: 8px; // Bordes redondeados suaves
+$card-aspect-ratio: 16 / 10; // Para rectángulos (ej. 16:9, 4:3, o 1:1 para cuadrados)
+                               // Si quieres cuadrados, usa: 1 / 1;
 
-  // Contenedor principal de la página de catálogo
-  .catalog-container {
-    background-color: $bg-color;
-    padding: 40px 20px; // Espaciado interno
-    min-height: calc(100vh - 80px); // Ajusta si tienes cabecera/pie de página
-  }
+$grid-gap: 20px; // Espacio entre tarjetas
 
-  // Título (si decides usarlo)
+// --- Contenedor principal y título ---
+.catalog-container {
+  background-color: $bg-color;
+  padding: 30px 20px;
+  min-height: calc(100vh - 120px); // Ajusta según altura de navbar/footer
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Centrar el carrusel wrapper
+
   h2 {
     color: $text-color;
     text-align: center;
-    margin-bottom: 40px;
-    font-size: 2em;
-  }
-
-  // Grid/Contenedor para las formas de género
-  .genre-grid {
-    display: flex; // Usar flexbox
-    flex-wrap: wrap; // Permitir que los elementos bajen a la siguiente línea
-    justify-content: center; // Centrar horizontalmente
-    align-items: center; // Centrar verticalmente los items en cada línea
-    gap: 30px; // Espacio entre los items
-    padding: 20px; // Espacio interno del grid
-  }
-
-  // Contenedor individual para cada género
-  //.genre-item {
-    // Podríamos añadir perspectiva aquí si la animación hover fuera 3D
-  //}
-
-  // Estilos base para TODAS las formas de género
-  .genre-shape {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 15px; // Padding interno para el texto
-    background-color: $shape-bg-color;
-    color: $text-color;
+    margin-bottom: 30px;
+    font-size: 2.2em;
     font-weight: bold;
-    cursor: pointer;
-    position: relative; // Para posibles pseudo-elementos o overlays futuros
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease; // Transición suave para hover
+  }
+}
 
-    // --- Definición de Tamaños ---
-    &.size-small { width: $size-s; height: $size-s * 0.866; } // Alto para hexágono regular aprox.
-    &.size-medium { width: $size-m; height: $size-m * 0.866; }
-    &.size-large { width: $size-l; height: $size-l * 0.75; } // Ajustar alto para el heptágono grande
+// Wrapper para el carrusel (grid + flechas)
+.genre-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; // Centrar la grilla si es más pequeña que el wrapper
+  width: 100%;
+  max-width: 800px; // Ajusta el ancho máximo del carrusel
+}
 
-    // --- Definición de Formas con clip-path ---
-    // Hexágono Regular
-    &.genre-hexagon {
-      // clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); // Hexágono puntiagudo
-      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); // Hexágono más parecido al wireframe
-    }
+// Flechas de navegación
+.nav-arrow {
+  background-color: rgba(217, 200, 200, 0.5);
+  color: $text-color;
+  border: 1px solid $text-color;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
-    // Hexágono Ancho (Aventura?)
-    &.shape-wide {
-      width: $size-m * 1.3; // Más ancho
-      height: $size-m * 0.7; // Un poco menos alto
-      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); // Misma forma hexágono
-    }
-
-    // Heptágono (Acción) - ¡Ajusta los puntos! Esto es una aproximación.
-    &.genre-heptagon {
-      clip-path: polygon(50% 0%, 95% 35%, 85% 90%, 50% 100%, 15% 90%, 5% 35%);
-    }
-
-    // Hexágono Alto (Drama)
-    &.genre-tall-hexagon {
-      width: $size-m * 0.8; // Más estrecho
-      height: $size-m * 1.1; // Más alto
-      clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%);
-    }
-
-    // --- Animación Hover ---
-    &:hover {
-      transform: scale(1.1); // Hace un 10% más grande
-      background-color: $shape-bg-hover; // Cambia ligeramente el fondo
-      z-index: 10; // Asegura que se ponga por encima de otros al agrandarse
-      .genre-name {
-        color: $text-color-hover; //cambia color de texto
-      }
-    }
+  &:hover:not(:disabled) {
+    background-color: $card-border-hover-color;
+    color: $text-color-hover;
+    border-color: $card-border-hover-color;
   }
 
-  // Estilo del nombre del género dentro de la forma
-  .genre-name {
-    font-size: 1em; // Tamaño base, se ajustará un poco por el tamaño del contenedor
-    // Podríamos limitar el ancho si el texto es muy largo:
-    // max-width: 90%;
-    // overflow: hidden;
-    // text-overflow: ellipsis;
-    // white-space: nowrap;
-    transition: color 0.3s ease; // Transición suave para el color del texto en hover
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
+
+  &.left-arrow {
+    margin-right: $grid-gap;
+  }
+
+  &.right-arrow {
+    margin-left: $grid-gap;
+  }
+}
+
+// Grid para los géneros (3x3)
+.genre-grid-fixed {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 3 columnas
+  // No necesitamos grid-template-rows si aspect-ratio define la altura
+  gap: $grid-gap;
+  width: 100%; // Ocupar el espacio disponible dentro del carrusel wrapper
+  // El número de filas (3) se logrará mostrando solo 9 items a la vez
+}
+
+// Contenedor individual para cada género (mantenido del HTML, puede no necesitar estilos propios)
+.genre-item {
+  // Si necesitas estilos adicionales para el contenedor del item.
+  // Por ejemplo, si quieres que el aspect-ratio se aplique aquí en lugar de en .genre-card
+}
+
+// Tarjeta de género (antes .genre-shape)
+.genre-card {
+  background-color: $card-bg-color;
+  color: $text-color;
+  font-weight: bold;
+  
+  border: $card-border-width solid $card-border-color;
+  border-radius: $card-border-radius;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+  aspect-ratio: $card-aspect-ratio; // Controla la proporción
+  // Si no usas aspect-ratio, define un height aquí, ej: height: 120px;
+
+  padding: 15px; // Padding interno
+  cursor: pointer;
+  overflow: hidden;
+  
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05); // Efecto de hover que tenías
+    background-color: $card-bg-hover; //
+    border-color: $card-border-hover-color;
+    .genre-name {
+      color: $text-color-hover; //
+    }
+  }
+}
+
+.genre-name {
+  font-size: 1.1em; // Ajusta según el tamaño de tus tarjetas
+  transition: color 0.3s ease;
+  // No se necesita fondo para el texto ya que no hay imagen de fondo en la tarjeta
+}
+
+// Indicador de carga
+.loading-indicator { // Estilo simple para el indicador de carga
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: $secondary-text-color; // Necesitarías definir $secondary-text-color
+}
+
+// Eliminamos los estilos de .genre-hexagon, .shape-wide, etc.
+// y los de .size-small, .size-medium, .size-large relacionados con clip-path.

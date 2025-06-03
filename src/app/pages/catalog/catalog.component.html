@@ -1,10 +1,23 @@
-  <div class="catalog-container">
-    <div class="genre-grid">
-      <div class="genre-item" *ngFor="let genre of genres">
-        <div class="genre-shape"
-            [ngClass]="genre.cssClass" (click)="selectGenre(genre)"
-            title="Ver películas de {{ genre.name }}"> <span class="genre-name">{{ genre.name }}</span>
+<div class="catalog-container">
+  <h2>Catálogo de Géneros</h2> <div class="genre-carousel-wrapper">
+    <button class="nav-arrow left-arrow" (click)="previousGenres()" [disabled]="currentPage === 0">
+      &lt; </button>
+
+    <div class="genre-grid-fixed">
+      <div class="genre-item" *ngFor="let genre of displayedGenres">
+        <div class="genre-card"
+            (click)="selectGenre(genre)"
+            title="Ver películas de {{ genre.name }}">
+          <span class="genre-name">{{ genre.name }}</span>
         </div>
       </div>
     </div>
+
+    <button class="nav-arrow right-arrow" (click)="nextGenres()" [disabled]="currentPage >= totalPages - 1">
+      &gt; </button>
   </div>
+
+  <div *ngIf="isLoadingGenres" class="loading-indicator">
+    <p>Cargando géneros...</p>
+  </div>
+</div>

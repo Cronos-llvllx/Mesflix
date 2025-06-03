@@ -1,7 +1,7 @@
 // Paleta (consistente con el resto de la app)
-$footer-bg: #101010;      // Casi negro, pero no #000
-$footer-text: #a0a0a0;    // Gris claro/medio
-$footer-link-hover: #dcdcdc; // Gris más claro para hover
+$footer-bg: #db5217;      // Casi negro, pero no #000
+$footer-text: #d6d3d3;    // Gris claro/medio
+$footer-link-hover: #3cc6ec; // Gris más claro para hover
 $max-content-width: 1100px; // Ancho máximo del contenido centrado
 
 :host {
@@ -42,7 +42,7 @@ $max-content-width: 1100px; // Ancho máximo del contenido centrado
     &:hover,
     &.active-link { // Estilo para hover y enlace activo
       color: $footer-link-hover;
-      // text-decoration: underline; // Opcional: subrayado en hover/activo
+      text-decoration: underline; // Opcional: subrayado en hover/activo
     }
   }
 }
