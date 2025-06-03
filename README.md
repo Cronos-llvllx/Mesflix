@@ -1,9 +1,8 @@
 # Mesflix
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.18.
+Mesflix es un servicio de streaming , hecho con HTML, SCSS, TypeScript, Angular para el frontend y para el backend C# con .Net y entityFramework junto con la Base de datos de T-Sql. Es desarrollado como parte de un bootcamp de Mega con Liderly para aprender las bases de la programacion y aprender Angular para hacierlo con una mejor experiencia mas robusta y escalable. Nuestro challenger y lider tecnico [@brujeriatech](https://github.com/josejesusguzman)
 ---
 Hector Daniel Gomez Medina
 ---
-Mesflix es un servicio de streaming , hecho con HTML, SCSS, TypeScript, Angular para el frontend y para el backend C# con .Net y entityFramework junto con la Base de datos de T-Sql. Es desarrollado como parte de un bootcamp de Mega con Liderly para aprender las bases de la programacion y aprender Angular para hacierlo con una mejor experiencia mas robusta y escalable. Nuestro challenger y lider tecnico [@brujeriatech](https://github.com/josejesusguzman)
 ***
 
 ## Requerimientos Técnicos
@@ -22,8 +21,9 @@ Mesflix es un servicio de streaming , hecho con HTML, SCSS, TypeScript, Angular 
 |-----------|------------------------------------------------------|
 | **Lenguajes de programación** | HTML, SCSS, TypeScript, C#, T-SQL |
 | **Frameworks / Librerías** | Angular 18, Entity Framework, .NET |
-| **Herramientas de diseño** | Draw.io (mockups), [dbdiagram.io](https://dbdiagram.io/) (diagramas E-R) |
+| **Herramientas de diseño** | Draw.io (mockups), [dbdiagram.io](https://dbdiagram.io/) (diagramas E-R) , [paletto.com](https://paletton.com/) |
 | **Software / IDE** | Visual Studio Code |
+| **Herramientas adicionales** | Docker Desktop, kubernetes |
 | **Software recomendado** | SQL Server Management Studio 20 |
 | **Recursos adicionales** | [MDN HTML](https://developer.mozilla.org/en-US/docs/Web/HTML), [MDN CSS](https://developer.mozilla.org/en-US/docs/Web/CSS), [Angular Docs](https://angular.dev), [C# Docs](https://learn.microsoft.com/es-es/dotnet/csharp), [SQL Server T-SQL](https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver16), [Entity Framework Docs](https://learn.microsoft.com/es-es/ef/) |
 
@@ -138,9 +138,108 @@ json
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=MesflixDB;User Id=sa;Password=TuContraseña;"
 }
+
+### Configuración y Despliegue con Docker y Kubernetes (Local)
+Esta sección describe los pasos para construir las imágenes Docker de la aplicación Mesflix (frontend y backend) y desplegarlas en un clúster local de Kubernetes (como el que se incluye con Docker Desktop o Minikube).
+
+### Prerrequisitos
+Antes de comenzar, asegúrate de tener instalado lo siguiente en tu máquina:
+
+1-Docker Desktop (o Docker Engine si usas Linux y Minikube/Kind por separado):
+  Asegúrate de que Docker esté corriendo.
+  Si usas Docker Desktop, habilita Kubernetes desde la configuración de Docker Desktop.
+2-kubectl: La herramienta de línea de comandos para interactuar con Kubernetes.
+  Si instalaste Docker Desktop con Kubernetes, kubectl ya debería estar configurado para apuntar a tu clúster local.
+  Puedes verificar con kubectl cluster-info.
+3-SDK de .NET: Necesario para construir el backend si se hacen cambios en el código fuente (ej. .NET 6, 7 u 8, según tu proyecto ApiMesflix).
+  Node.js y npm/yarn: Necesario para construir el frontend si se hacen cambios en el código fuente (Mesflix-frontend).
+4-Git: Para clonar este repositorio.
+5-(Opcional, para Base64) Una forma de codificar en Base64 (Linux/macOS tienen base64 en la terminal; Windows puede usar PowerShell o herramientas online con precaución para datos sensibles).
+Para este paso ya tienes que haber clonado el repo.
+# Configurar Secretos de Kubernetes
+
+La aplicación requiere secretos para la cadena de conexión a la base de datos y la clave JWT. Estos valores no se incluyen directamente en el repositorio por seguridad.
+
+## 1. Creación del archivo `mesflix-secrets.yaml` y `mesflix-configmap.yaml`
+En la raíz del proyecto (o donde tengas tus archivos YAML de Kubernetes), encontrarás un archivo llamado `mesflix-secrets.yaml.example` (o `mesflix-secrets.template.yaml`).  
+Copia este archivo y renómbralo a `mesflix-secrets.yaml`:
+
+bash
+cp mesflix-secrets.yaml.example mesflix-secrets.yaml
+# 2. Editar mesflix-secrets.yaml , `mesflix-configmap.yaml` y añadir valores
+Necesitarás codificar en Base64 tu cadena de conexión a la base de datos y tu clave secreta JWT.
+# Para la cadena de conexión
+echo -n 'Server=TU_SERVIDOR_BD;Database=MesflixDB;User ID=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True' | base64
+
+# Para la clave JWT (usa una clave larga y segura)
+echo -n 'TU_CLAVE_SECRETA_JWT_MUY_LARGA_Y_ALEATORIA' | base64
+# Codificación en Base64 (Windows - PowerShell)
+$ConnectionString = "Server=TU_SERVIDOR_BD;Database=MesflixDB;User ID=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True"
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($ConnectionString))
+
+$JwtKey = "TU_CLAVE_SECRETA_JWT_MUY_LARGA_Y_ALEATORIA"
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($JwtKey))
+# 3. Reemplazar valores en mesflix-secrets.yaml y mesflix-configmap.yaml
+# mesflix-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mesflix-secrets
+type: Opaque
+data:
+  DB_CONNECTION_STRING: TU_CADENA_DE_CONEXION_EN_BASE64  # <-- Reemplaza
+  JWT_KEY: TU_CLAVE_JWT_EN_BASE64                  # <-- Reemplaza
+Nota sobre la Base de Datos:
+La cadena de conexión debe apuntar a una instancia de SQL Server accesible. Si el backend corre en Kubernetes y la BD es un contenedor Docker fuera de Kubernetes:
+
+Usa host.docker.internal si usas Docker Desktop.
+Usa la IP de tu máquina host si usas Minikube.
+
+# 4. (Opcional) Configurar la Base de Datos
+Si necesitas crear el esquema de la BD, puedes encontrar el script en database/mesflix_schema.sql y ejecutarlo contra SQL Server.
 ## Mockup
 (![Mockup](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/MockUpMesflixAngular.png)
-
+# 5. Construir las imágenes Docker
+Backend (api-mesflix)
+Navega a la carpeta donde está el Dockerfile del backend:
+docker build -t api-mesflix:latest ./ApiMesflix
+Frontend (mesflix-frontend)
+Navega a la carpeta donde está el Dockerfile del frontend:
+docker build -t mesflix-frontend:latest ./Mesflix-Frontend
+Para usuarios de Minikube
+eval $(minikube -p <nombre_de_tu_perfil_minikube> docker-env)
+# 6. Despliegue en Kubernetes
+Asegúrate de estar en la carpeta con los archivos YAML de Kubernetes.
+Aplicar el ConfigMap
+kubectl apply -f mesflix-configmap.yaml
+aplicar Secrets
+kubectl apply -f mesflix-secrets.yaml
+Desplegar el Backend 
+kubectl apply -f api-mesflix-deployment.yaml
+kubectl apply -f api-mesflix-service.yaml
+Desplegar el Front-end
+kubectl apply -f mesflix-frontend-deployment.yaml
+kubectl apply -f mesflix-frontend-service.yaml
+# 7. Verificar el Despliegue
+Verificar los Pods
+kubectl get pods -w
+Si ves ImagePullBackOff o ErrImagePull, verifica que el nombre de la imagen en deployment.yaml coincida con la que construiste.
+Verificar los Servicios
+kubectl get services
+api-mesflix-service probablemente sea de tipo ClusterIP.
+mesflix-frontend-service podría ser de tipo LoadBalancer o NodePort.
+# 8. Acceder a la Aplicación
+Si mesflix-frontend-service es de tipo LoadBalancer
+kubectl get services
+Busca la EXTERNAL-IP para acceder a la app. Si usas Minikube, ejecuta:
+minikube service mesflix-frontend-service
+# 9. Solución de Problemas
+Logs de los Pods
+Si un pod está en estado CrashLoopBackOff o Error:
+kubectl logs <nombre-del-pod>
+Descripción del Pod
+kubectl describe pod <nombre-del-pod>
+Presta atención a la sección "Events" al final.
 ---
 
 ## Capturas de pantalla
@@ -153,8 +252,7 @@ En este caso despues de pasar por el login nos redirecciona a la pagina seleccio
 ![ChooseUser](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/photosReadme/SelectionUser.png)
 ### 3- Pagina principal Catalog
 En este caso despues de pasar por el selection user nos redirecciona a la pagina principal en la cual  nos muestra los generos que extraemos de la API de TMDB de peliculas al darle clic a la figura nos redirige hacia el genero de peliculas en cuestion.
-![Catalog](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/photosReadme/catalogfirst.png)
-![Catalog2](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/photosReadme/catalogsec.png)
+![Catalog](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/photosReadme/catalog.png)
 ### 4- Visualizacion de peliculas
 Se vera asi al darle clic al genero requerido, donde se muestra el genero de titulo en este caso "accion" y en la parte de abajo foto, titulo de pelicula del lado izquierdo y del derecho 3 botones, ver, ocultar y favorito. Al darle el boton agregar se guardara en la BD y aparecera en la pestana de "Favoritos" del navbar.
 ![Movies](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/photosReadme/GenreMovies.png)
@@ -163,123 +261,197 @@ En este caso hay que primero darle clic a un genero, despues darle clic al boton
 ![Favorites](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/photosReadme/favorites.png)
 # Mesflix - Aplicación de Streaming de Películas
 
-## Características Implementadas en Sprint 4
+## Características Implementadas en Sprint 5
 
-En este sprint, nos hemos enfocado en mejorar el rendimiento y la seguridad de la aplicación. A continuación, se detallan las implementaciones clave:
+En este sprint, nos hemos enfocado en mejorar el diseno UX/UI y la empaquetacion con docker y kubernetes. A continuación, se detallan las implementaciones clave:
+
+Arquitectura del Backend (API ASP.NET Core)
+El backend de Mesflix está desarrollado con ASP.NET Core, utilizando el patrón arquitectónico Modelo-Vista-Controlador (MVC) adaptado para la creación de APIs RESTful. En esta implementación:
+
+Modelo: Representado por las clases de entidad (como User, UserFavorite) y el MesflixDbContext que maneja la lógica de acceso y manipulación de datos con Entity Framework Core.
+Vista: En el contexto de esta API, las "vistas" son las respuestas HTTP que se envían al cliente. Estas respuestas están típicamente formateadas en JSON y van acompañadas de códigos de estado HTTP que indican el resultado de la operación (ej. 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized). La API no genera vistas HTML directamente.
+Controlador: Se utilizan API Controllers (clases que heredan de ControllerBase y están decoradas con [ApiController]). Estos controladores (AuthController, FavoritesController, TestDataController) reciben las solicitudes HTTP, procesan la lógica de negocio (a menudo interactuando con los modelos o servicios), y devuelven las respuestas HTTP correspondientes.
+
+AuthController:
+Responsable de la autenticación y registro de usuarios.
+Implementa endpoints como:
+POST /api/auth/register: Para registrar nuevos usuarios. Recibe un UserRegisterDto y, si es exitoso, devuelve una respuesta indicando el éxito o los detalles del usuario creado.
+POST /api/auth/login: Para iniciar sesión. Recibe un UserLoginDto, valida las credenciales y, si son correctas, genera y devuelve un token JWT (JSON Web Token) que el cliente utilizará para autenticar solicitudes posteriores.
+FavoritesController:
+
+Gestiona las películas favoritas de los usuarios.
+Todos sus endpoints están protegidos y requieren un token JWT válido para ser accedidos (indicado por el atributo [Authorize]).
+Implementa endpoints como:
+GET /api/favorites: Obtiene la lista de IDs de películas favoritas del usuario autenticado.
+POST /api/favorites: Añade una película a los favoritos del usuario. Recibe un AddFavoriteDto con el ID de la película.
+DELETE /api/favorites/{movieId}: Elimina una película de los favoritos del usuario.
+TestDataController:
+
+Controlador de ejemplo para probar la autenticación y autorización.
+Incluye:
+Un endpoint público (GET /api/testdata/public).
+Un endpoint protegido (GET /api/testdata/protected) que requiere autenticación.
+3. Conexión a la Base de Datos
+Entity Framework Core (EF Core): Se utiliza EF Core como ORM (Object-Relational Mapper) para interactuar con la base de datos SQL Server.
+MesflixDbContext: Esta clase (ApiMesflix/Data/MesflixDbContext.cs) hereda de DbContext y define los DbSet para las entidades (como Users, UserFavorites), representando las tablas de la base de datos. También configura el modelo y las relaciones.
+Cadena de Conexión: La cadena de conexión a la base de datos se configura en appsettings.Development.json para el entorno de desarrollo y se registra en Program.cs usando builder.Configuration.GetConnectionString("MesflixDbConnection"). Cuando se despliega en Kubernetes, esta cadena se provee a través de un Secret.
+4. Implementación de Login con JWT (JSON Web Tokens)
+Registro (/api/auth/register):
+Recibe los datos del nuevo usuario.
+Hashea la contraseña antes de guardarla en la base de datos por seguridad (usando una técnica de hashing como la que proporciona ASP.NET Core Identity o una librería similar).
+Login (/api/auth/login):
+Valida las credenciales del usuario contra los datos almacenados.
+Si son válidas, genera un token JWT. Este token contiene "claims" (información sobre el usuario como su ID, nombre, roles, etc.) y está firmado digitalmente usando una clave secreta (Jwt:Key configurada en appsettings.Development.json o un Secret en Kubernetes).
+También se configuran un Issuer (emisor) y Audience (audiencia) para el token, que se validan al autenticar las solicitudes.
+Autenticación de Solicitudes:
+El cliente (frontend) debe enviar este token JWT en la cabecera Authorization de cada solicitud a endpoints protegidos, usando el esquema Bearer (ej. Authorization: Bearer <token>).
+El middleware de autenticación JWT configurado en Program.cs (AddAuthentication y AddJwtBearer) intercepta las solicitudes, valida el token (firma, expiración, issuer, audience) y establece la identidad del usuario.
+5. Manejo de CORS (Cross-Origin Resource Sharing)
+CORS es necesario para permitir que el frontend (que se ejecuta en un origen diferente, ej. http://localhost:4200) haga solicitudes a la API backend (ej. http://localhost:5268).
+Se configura en Program.cs usando builder.Services.AddCors() y app.UseCors().
+Se ha definido una política específica (MyAllowSpecificOrigins) que permite solicitudes desde el origen del frontend de desarrollo (http://localhost:4200), permitiendo cualquier cabecera y método.
+6- Documentación de la API (Swagger/OpenAPI)
+La API del backend de Mesflix está documentada utilizando Swagger (OpenAPI), lo que proporciona una interfaz de usuario interactiva para explorar y probar los diferentes endpoints.
+
+Acceso a Swagger UI
+Cuando el proyecto backend (ApiMesflix) se está ejecutando en tu entorno de desarrollo local, puedes acceder a la documentación interactiva de Swagger UI a través de tu navegador web en la siguiente URL:
+
+http://localhost:port/swagger
+(Asegúrate de que el puerto "port" coincida con el puerto en el que tu API se está ejecutando localmente, según tu ApiMesflix/Properties/launchSettings.json).
+![swagger](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/SwaggerDocs.png)
+
+Características y Uso
+La interfaz de Swagger UI para Mesflix API (Mesflix API v1 OAS 3.0) ofrece las siguientes funcionalidades:
+
+Listado de Controladores y Endpoints: Muestra todos los controladores disponibles (Auth, Favorites, TestData) y los endpoints HTTP (GET, POST, DELETE, etc.) asociados a cada uno.
+Descripciones: Cada endpoint y sus parámetros están documentados con descripciones (si se han añadido comentarios XML en el código C# y se ha configurado Swagger para usarlos).
+Modelos (Schemas): Describe la estructura de los DTOs (Data Transfer Objects) utilizados para las solicitudes y respuestas (ej. UserRegisterDto, UserLoginDto, UserResponseDto, AddFavoriteDto). Estos se pueden ver en la sección "Schemas" de Swagger UI.
+Pruebas Interactivas ("Try it out"): Permite ejecutar solicitudes directamente desde el navegador para probar cada endpoint.
+Autorización JWT:
+Para los endpoints protegidos (marcados con un ícono de candado 🔒), Swagger UI está configurado para manejar la autenticación JWT.
+Cómo usarlo:
+Primero, ejecuta el endpoint POST /api/auth/login con credenciales válidas para obtener un token JWT.
+Copia el token de la respuesta.
+Haz clic en el botón "Authorize" (generalmente en la parte superior derecha de Swagger UI).
+En el diálogo que aparece, en la sección "BearerAuth (apiKey)", pega tu token JWT completo, asegurándote de incluir el prefijo Bearer (ej. Bearer eyJhbGciOiJIUzI1NiIs...).
+Haz clic en "Authorize" y luego cierra el diálogo.
+Ahora podrás ejecutar los endpoints protegidos.
+Esta configuración de Swagger se define en el archivo Program.cs del proyecto backend, donde se utiliza AddSwaggerGen() para configurar la generación de la documentación y la UI.
 
 ---
-
-### 1. Lazy Loading (Carga Diferida) en Angular
-Objetivo: Mejorar el tiempo de carga inicial de la aplicación al cargar módulos de funcionalidad solo cuando son necesarios.
-Implementación:
-Se ha implementado Lazy Loading para el módulo de autenticación. Esto significa que el código relacionado con las páginas de Login y Registro no se carga hasta que el usuario navega explícitamente a estas secciones.
-
-* **Rutas de Autenticación (`/auth`):**
-    * Las rutas bajo `/auth` (como `/auth/login` y `/auth/register`) ahora se cargan de forma diferida.
-    * **Archivo Principal de Rutas:** La configuración de `loadChildren` se encuentra en `src/app/app.routes.ts`.
-        ```typescript
-        // En src/app/app.routes.ts
-        // ...
-        {
-          path: 'auth',
-          loadChildren: () => import('./auth/auth.routes').then(mod => mod.AUTH_ROUTES)
-        },
-        // ...
-        ```
-      Archivo de Rutas de Autenticación: Las rutas específicas para login y registro (que utilizan componentes standalone) están definidas en `src/app/auth/auth.routes.ts`.
-        ```typescript
-        // En src/app/auth/auth.routes.ts
-        import { Routes } from '@angular/router';
-        import { AuthComponent } from '../pages/auth/auth.component';
-        import { LoginComponent } from '../pages/login/login.component';
-        import { RegisterComponent } from '../pages/register/register.component';
-
-        export const AUTH_ROUTES: Routes = [
-          {
-            path: '',
-            component: AuthComponent, // Componente layout para login/registro
-            children: [
-              { path: 'login', component: LoginComponent },
-              { path: 'register', component: RegisterComponent },
-              { path: '', redirectTo: 'login', pathMatch: 'full' }
-            ]
-          }
-        ];
-        ```
-      Componente Layout (`AuthComponent`): Se utiliza `src/app/pages/auth/auth.component.ts` como un componente de layout para las vistas de login y registro, permitiendo mantener estilos consistentes y un `<router-outlet>` para cargar los componentes específicos.
-
-  Verificación:
-    * Al cargar la aplicación inicialmente, el "chunk" de JavaScript correspondiente a las rutas de autenticación (ej. `chunk-auth-routes.js` o similar) no se descarga.
-    * Este chunk se descarga y se ejecuta solo cuando se navega a una ruta bajo `/auth`. Esto se puede observar en la pestaña "Network" de las herramientas de desarrollador del navegador. (Puedes incluir una captura de pantalla de la pestaña Network mostrando la carga del chunk.).
-
+Estructuracion de carpetas: 
+mesflix-project/                  # Carpeta raíz de tu repositorio Git
+├── .git/                         # Carpeta de Git (autogenerada)
+├── .gitignore                    # Archivo para especificar qué no subir a Git
+│
+├── ApiMesflix/                   # Carpeta raíz del proyecto Backend (.NET)
+│   ├── Controllers/              # Controladores de tu API
+│   ├── Data/                     # DbContext, migraciones (si usas EF Core)
+│   ├── Dtos/                     # Data Transfer Objects
+│   ├── Models/                   # Modelos de Entidad (clases que representan tus tablas)
+│   ├── Properties/               # launchSettings.json, etc.
+│   ├── appsettings.json
+│   ├── appsettings.Development.json
+│   ├── Program.cs
+│   ├── ApiMesflix.csproj         # Archivo de proyecto .NET
+│   └── Dockerfile                # Dockerfile para construir la imagen del backend
+│
+├── Mesflix-Frontend/             # Carpeta raíz del proyecto Frontend (Angular)
+│   ├── angular.json              # Configuración del CLI de Angular
+│   ├── package.json              # Dependencias y scripts de npm
+│   ├── package-lock.json         # Lockfile de npm
+│   ├── tsconfig.app.json         # Configuración de TypeScript para la app
+│   ├── tsconfig.json             # Configuración base de TypeScript
+│   ├── tsconfig.spec.json        # Configuración de TypeScript para pruebas
+│   ├── .editorconfig
+│   ├── .gitignore                # Gitignore específico del frontend (a menudo ya incluido en .gitignore raíz)
+│   ├── karma.conf.js             # Configuración de Karma (testing)
+│   ├── postcss.config.js         # Si usas PostCSS
+│   ├── src/                      # Código fuente de Angular
+│   │   ├── main.ts
+│   │   ├── index.html
+│   │   ├── styles.scss           # Estilos globales
+│   │   │
+│   │   ├── app/                  # Módulo raíz y componentes principales
+│   │   │   ├── app.component.html
+│   │   │   ├── app.component.scss
+│   │   │   ├── app.component.ts
+│   │   │   ├── app.config.ts
+│   │   │   ├── app.routes.ts
+│   │   │   │
+│   │   │   ├── components/       # Componentes reutilizables (Navbar, Footer, etc.)
+│   │   │   │   ├── navbar/
+│   │   │   │   └── footer/
+│   │   │   │
+│   │   │   ├── pages/            # Componentes que representan páginas completas
+│   │   │   │   ├── auth/
+│   │   │   │   │   ├── login/
+│   │   │   │   │   └── register/
+│   │   │   │   ├── catalog/
+│   │   │   │   ├── favorites/
+│   │   │   │   ├── profile/      # Para la nueva sección de perfil de usuario
+│   │   │   │   │   ├── account-info/
+│   │   │   │   │   ├── profiles-management/
+│   │   │   │   │   ├── settings/
+│   │   │   │   │   └── subscriptions/
+│   │   │   │   ├── search/
+│   │   │   │   ├── select-user/
+│   │   │   │   └── genre-movies/
+│   │   │   │   └── for-you/      # Si aún lo tienes o planeas
+│   │   │   │
+│   │   │   ├── services/         # Servicios de Angular (AuthService, TmdbService, etc.)
+│   │   │   ├── interface/        # Interfaces TypeScript (Movie, Genre, User, etc.)
+│   │   │   ├── guards/           # Guards de ruta (AuthGuard)
+│   │   │   ├── interceptors/     # Interceptores HTTP (AuthInterceptor) - podrías ponerlo en `core` o `shared` también
+│   │   │   └── auth/             # Si tienes rutas específicas para el módulo auth (auth.routes.ts)
+│   │   │
+│   │   ├── assets/               # Archivos estáticos (imágenes, fuentes, etc.)
+│   │   │   └── img/              # Imágenes
+│   │   │       ├── genres/       # Imágenes para géneros (si las usas)
+│   │   │       └── profiles/     # Imágenes para avatares de perfil
+│   │   │
+│   │   └── environments/         # Archivos de entorno (dev, prod)
+│   │       ├── environment.ts
+│   │       └── environment.development.ts
+│   │
+│   └── Dockerfile                # Dockerfile para construir la imagen del frontend
+│   └── nginx.conf                # (Si usas Nginx para servir el frontend en Docker)
+│
+├── kubernetes/                   # Carpeta para los manifests YAML de Kubernetes
+│   ├── api-mesflix-deployment.yaml
+│   ├── api-mesflix-service.yaml
+│   ├── mesflix-frontend-deployment.yaml
+│   ├── mesflix-frontend-service.yaml
+│   ├── mesflix-configmap.yaml
+│   ├── mesflix-secrets.yaml.example # PLANTILLA para los secretos, NO el archivo real con datos sensibles
+│   └── (otros archivos como Ingress, PVCs si los necesitas más adelante)
+│
+├── database/                     # Scripts de base de datos, diagramas, etc.
+│   ├── mesflix_schema.sql        # Tu script de esquema de BD
+│   └── DiagramaER-Mesflix.png    # Tu diagrama E-R
+│
+└── README.md                     # Documentación principal del proyecto
 ---
 
-### 2. Seguridad en el Login
-Objetivo: Implementar un flujo de autenticación seguro utilizando JSON Web Tokens (JWT) para proteger los endpoints del backend y las rutas del frontend.
-Implementación:
-La seguridad del login se ha implementado a través de varios componentes y capas:
-
-* **Backend (API C# - `ApiMesflix`):**
-    * **Generación de Tokens JWT:**
-        * Tras un login exitoso (verificación de email y contraseña hasheada con BCrypt), el `AuthController.cs` genera un token JWT.
-        * El token incluye claims como `UserId`, `Email`, `FirstName`, `LastName` y un tiempo de expiración.
-        * La generación utiliza una clave secreta, un emisor (`Issuer`) y una audiencia (`Audience`) definidos en `appsettings.json` (y `appsettings.Development.json`).
-        * **Archivo:** `ApiMesflix/Controllers/AuthController.cs` (método `Login`)
-    * **Validación de Tokens JWT:**
-        * La configuración para validar los tokens JWT se encuentra en `ApiMesflix/Program.cs`.
-        * Se utiliza `AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(...)` para configurar los parámetros de validación (emisor, audiencia, clave de firma, tiempo de vida).
-        * El middleware `app.UseAuthentication()` y `app.UseAuthorization()` se ha añadido al pipeline de la aplicación.
-        * **Archivo:** `ApiMesflix/Program.cs`
-    * **Protección de Endpoints:**
-        * Endpoints que requieren autenticación (como los del futuro `FavoritesController` o el `TestDataController` de prueba) se protegen con el atributo `[Authorize]`.
-        * Esto asegura que solo las peticiones con un token JWT válido puedan acceder a estos recursos.
-        * **Ejemplo:** `ApiMesflix/Controllers/TestDataController.cs` (método `GetProtectedData`) y `ApiMesflix/Controllers/FavoritesController.cs`.
-
-* **Frontend (Aplicación Angular - `Mesflix`):**
-    * **Servicio de Autenticación (`AuthService`):**
-        * Maneja las llamadas a los endpoints de login y registro del backend.
-        * Almacena el token JWT recibido en `localStorage` después de un login exitoso.
-        * Provee un método `logout()` que elimina el token de `localStorage` y redirige al usuario.
-        * Mantiene un estado observable (`isUserLoggedIn$`) para que otros componentes puedan reaccionar a los cambios de autenticación.
-        * **Archivo:** `src/app/services/auth.service.ts`
-    * **Interceptor HTTP (`AuthInterceptor`):**
-        * Intercepta todas las peticiones HTTP salientes.
-        * Si el usuario está logueado y la petición va a la API del backend, adjunta automáticamente el token JWT a la cabecera `Authorization` como un "Bearer token".
-        * **Archivo:** `src/app/auth.interceptor.ts`
-        * **Configuración:** Proveído en `src/app/app.config.ts`.
-    * **Route Guards (`AuthGuard`):**
-        * Implementa la interfaz `CanActivate` para proteger rutas en el frontend.
-        * Utiliza `AuthService.isLoggedIn()` para verificar si el usuario está autenticado.
-        * Si el usuario no está autenticado, lo redirige a la página de login.
-        * **Archivo:** `src/app/auth.guard.ts`
-        * **Aplicación:** En `src/app/app.routes.ts` (o rutas de módulos específicos) en la propiedad `canActivate` de las rutas protegidas (ej. `/select-user`, `/catalog`, `/favorites`).
-
-* **Flujo General:**
-    1.  Usuario se registra o inicia sesión a través del frontend.
-    2.  El backend valida credenciales y emite un JWT.
-    3.  El frontend almacena el JWT.
-    4.  Para acceder a rutas/endpoints protegidos, el `AuthInterceptor` del frontend envía el JWT.
-    5.  El `AuthGuard` del frontend previene el acceso a rutas si no hay token.
-    6.  El backend valida el JWT. Si es válido, permite el acceso al endpoint y devuelve los datos solicitados.
 
 ---
 ### 8- Testing code coverage
-![CC1](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/TestHTML.png)
-![CC2](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/KarmaTest1.png)
+![CC1](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/filesTesting/testing-codeCoverage.png)
+![CC2](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/filesTesting/reporte-testing.png)
 ### 9- Diagrama E-R
 ![ER](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/DiagramaER-MesflixDB.png)
+
 
 ---
 
 
 ## Proceso que seguiste para hacerlo
-Sin duda este ha sido el Sprint mas dificil hasta ahora, el proceso que segui fue primer dividir las tareas en subtareas conforme a lo que nos habia pedido el challenger del sprint 4, despues fui a varias fuentes de informacion, cursos , paginas y documentacion ya que habia algunas implementaciones e instalaciones que no sabia que necesitaba hasta que lo hice. Despues tuve un problema con la instalacion de MySQL por lo cual tuve que instalarlo en un contenedor y de ahi usar mi BD local.
-Fue un proceso lento que fui implementado cosas como el hash de las contrasenas, pero que me arrojaba algunos errores entonces tenia que ir viendo y ajustando que hacia mal. Sin duda me ayudan muchos mis apuntes y los cursos como los recursos, pero lo mas importante es programar, asi realmente aprendes con errores del mundo real.
+Sin duda este fue un Sprint muy tedioso, el proceso que segui fue primer dividir las tareas en subtareas conforme a lo que nos habia pedido el challenger del sprint 5, despues fui a varias fuentes de informacion, cursos , paginas y documentacion ya que habia algunas implementaciones e instalaciones que no sabia que necesitaba hasta que lo hice. Despues tuve un problema con la implementacion de docker y kubernetes por el manejo de dependencias, incompatibilidades mucha configuracion de archivos y aprender nuevos conceptos. 
 
 
 ## Tabla de sprint review
 | Sprint | ¿Qué salió bien? | ¿Qué no salió bien? | ¿Qué puedo mejorar? |
 |--------|------------------|---------------------|---------------------|
-|Sprint 4|Logre los objetivos marcados por el challenger y corregi las fallas que me marco el challenger. Entendi de que se encarga el back y el front, algo que antes me confundia. | Me salieron muchos errores, dolores de cabeza y desvelos, hubo cosas que no entendia porque dejaban de funcionar, creo que a veces subestimo la complejidad de algunas cosas. | Mejorar mis tests. |
+|Sprint 5|La mejora de la navegacion de pagina y el diseno. | Tuve muchos problemas para implementar docker y kubernetes, errores de compatibilidad y manejo de dependencias pero al final parecio todo quedar solucionado.. | Enfocarme mas en el backlog o dedicarle un poco mas de tiempo. |
 
 
