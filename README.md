@@ -197,8 +197,7 @@ Usa la IP de tu máquina host si usas Minikube.
 
 # 4. (Opcional) Configurar la Base de Datos
 Si necesitas crear el esquema de la BD, puedes encontrar el script en database/mesflix_schema.sql y ejecutarlo contra SQL Server.
-## Mockup
-(![Mockup](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/MockUpMesflixAngular.png)
+
 # 5. Construir las imágenes Docker
 Backend (api-mesflix)
 Navega a la carpeta donde está el Dockerfile del backend:
@@ -339,7 +338,9 @@ Ahora podrás ejecutar los endpoints protegidos.
 Esta configuración de Swagger se define en el archivo Program.cs del proyecto backend, donde se utiliza AddSwaggerGen() para configurar la generación de la documentación y la UI.
 
 ---
-Estructuracion de carpetas: 
+## Estructuración de Carpetas
+
+```bash
 mesflix-project/                  # Carpeta raíz de tu repositorio Git
 ├── .git/                         # Carpeta de Git (autogenerada)
 ├── .gitignore                    # Archivo para especificar qué no subir a Git
@@ -431,6 +432,7 @@ mesflix-project/                  # Carpeta raíz de tu repositorio Git
 │   └── DiagramaER-Mesflix.png    # Tu diagrama E-R
 │
 └── README.md                     # Documentación principal del proyecto
+```
 ---
 
 
@@ -440,6 +442,8 @@ mesflix-project/                  # Carpeta raíz de tu repositorio Git
 ![CC2](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/filesTesting/reporte-testing.png)
 ### 9- Diagrama E-R
 ![ER](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/DiagramaER-MesflixDB.png)
+## Mockup
+(![Mockup](https://github.com/Cronos-llvllx/Mesflix/blob/main/public/MockUpMesflixAngular.png)
 
 
 ---
