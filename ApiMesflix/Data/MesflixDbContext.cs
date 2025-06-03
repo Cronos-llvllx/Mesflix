@@ -36,8 +36,8 @@ public class MesflixDbContext : DbContext
 
             // Configura la relación con User
             entity.HasOne(d => d.User)
-                  .WithMany(p => p.UserFavorites)
-                  .HasForeignKey(d => d.UserId)
+                    .WithMany(p => p.UserFavorites)
+                    .HasForeignKey(d => d.UserId)
                   .OnDelete(DeleteBehavior.Cascade) // Coincide con tu T-SQL
                   .HasConstraintName("FK_UserFavorites_Users"); // Opcional: nombrar la FK si existe en la BD
         });

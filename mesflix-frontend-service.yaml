@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mesflix-frontend-service
+spec:
+  selector:
+    app: mesflix-frontend # Debe coincidir con las labels del Deployment
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer # Para exponer a internet

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mesflix-frontend-deployment
+  labels:
+    app: mesflix-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mesflix-frontend
+  template:
+    metadata:
+      labels:
+        app: mesflix-frontend
+    spec:
+      containers:
+      - name: mesflix-frontend
+        image: mesflix-frontend:latest # REEMPLAZA con tu imagen Docker
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80 # El puerto que Nginx expone DENTRO del contenedor
+        env:
+        # Las variables de entorno para Angular suelen hornearse en el build.
+        # Si necesitas pasar la URL de la API en runtime (más avanzado),
+        # podrías montar un config.js y que Angular lo lea al iniciar.
+        # Por ahora, asumimos que environment.prod.ts tiene la URL correcta de la API
+        # (que apuntaría al api-mesflix-service dentro del cluster).
+        # - name: API_URL 
+        #   value: "http://api-mesflix-service/api" # Ejemplo si la API es accesible por este nombre de servicio

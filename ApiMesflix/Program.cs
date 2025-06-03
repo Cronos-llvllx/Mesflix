@@ -11,12 +11,12 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:4200") // La URL de tu app Angular
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                      });
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200") // La URL de tu app Angular
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
 });
 
 // --- Conexión a la Base de Datos ---
@@ -48,7 +48,60 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); // Considera añadir configuración de Swagger para JWT si usas Swagger
+builder.Services.AddSwaggerGen(options =>
+{
+    // Define la información general de tu API para la UI de Swagger
+options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+{
+    Version = "v1",
+    Title = "Mesflix API",
+    Description = "API para la aplicación Mesflix"
+});
+
+// Configurar Swagger para usar el archivo XML de documentación
+var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+if (File.Exists(xmlPath)) // Buena práctica verificar si el archivo existe
+{
+    options.IncludeXmlComments(xmlPath);
+}
+
+// Configurar Swagger para usar JWT Bearer
+// 1. Definir el esquema de seguridad "Bearer"
+options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+{
+    // Dónde se espera el token (en este caso, en la cabecera)
+    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+    // Descripción que verá el usuario en la UI de Swagger
+    Description = "Por favor, ingresa 'Bearer' [espacio] y luego tu token en el campo de texto de abajo.",
+    // Nombre de la cabecera que llevará el token
+    Name = "Authorization",
+    // Tipo de esquema de seguridad
+    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey, // Usar ApiKey es una forma común para Bearer tokens.
+                                                              // Alternativamente, podrías usar Http con Scheme = "bearer".
+    Scheme = "Bearer" // El esquema a usar (importante para la UI)
+});
+
+// 2. Indicar que los endpoints pueden requerir este esquema de seguridad "Bearer"
+options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+{
+    {
+        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+            {
+                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                Id = "Bearer" // Debe coincidir con el nombre dado en AddSecurityDefinition
+            },
+            // Scheme = "oauth2", // No es necesario si Type es ApiKey
+            // Name = "Bearer",    // No es necesario si Type es ApiKey
+            // In = ParameterLocation.Header // No es necesario si Type es ApiKey
+        },
+        new List<string>() // O new string[] {} - Lista de scopes, usualmente vacía para Bearer simple
+    }
+});
+
+});
 
 var app = builder.Build();
 
@@ -61,12 +114,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(MyAllowSpecificOrigins); // Habilitar CORS
+app.UseCors(MyAllowSpecificOrigins); // Habilita CORS
 
-// --- INICIO DE USO DE AUTENTICACIÓN Y AUTORIZACIÓN ---
+// --- INICIO  DE AUTENTICACIÓN Y AUTORIZACIÓN ---
 app.UseAuthentication(); // PRIMERO: Verifica si hay un token y lo valida, estableciendo la identidad del usuario.
 app.UseAuthorization();  // SEGUNDO: Verifica si el usuario autenticado tiene permiso para acceder al recurso.
-// --- FIN DE USO DE AUTENTICACIÓN Y AUTORIZACIÓN ---
+// --- FIN  DE AUTENTICACIÓN Y AUTORIZACIÓN ---
 
 app.MapControllers();
 

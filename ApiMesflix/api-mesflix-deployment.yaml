@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-mesflix-deployment
+  labels:
+    app: api-mesflix
+spec:
+  replicas: 1 # Comienza con 1 réplica, puedes escalarlo después
+  selector:
+    matchLabels:
+      app: api-mesflix
+  template:
+    metadata:
+      labels:
+        app: api-mesflix
+    spec:
+      containers:
+      - name: mesflix-backend
+        image: api-mesflix:latest # REEMPLAZA con tu imagen Docker
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080 # El puerto que tu API expone DENTRO del contenedor
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production" # O "Development", etc.
+        - name: ConnectionStrings__MesflixDbConnection
+          valueFrom:
+            secretKeyRef:
+              name: mesflix-secrets # Nombre de tu Secret de Kubernetes
+              key: DB_CONNECTION_STRING
+        - name: Jwt__Key
+          valueFrom:
+            secretKeyRef:
+              name: mesflix-secrets
+              key: JWT_KEY
+        - name: Jwt__Issuer
+          valueFrom:
+            configMapKeyRef:
+              name: mesflix-configmap # Nombre de tu ConfigMap de Kubernetes
+              key: JWT_ISSUER
+        - name: Jwt__Audience
+          valueFrom:
+            configMapKeyRef:
+              name: mesflix-configmap
+              key: JWT_AUDIENCE
+        # Añade más variables de entorno según sea necesario
+        # Considera usar ConfigMaps para configuración no sensible
+        # y Secrets para configuración sensible (API keys, connection strings, JWT secret)

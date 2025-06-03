@@ -12,6 +12,8 @@ _ReSharper*/
 # Archivos de configuración local
 appsettings.Development.json
 appsettings.json
+mesflix-secrets.yaml
+mesflix-configmap.yaml
 
 # Archivos de usuario
 *.vs/
