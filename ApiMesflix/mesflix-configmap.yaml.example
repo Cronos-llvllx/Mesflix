@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mesflix-configmap
+data:
+  JWT_ISSUER: "" # la URL de tu servicio en producción
+  JWT_AUDIENCE: "" # la URL de tu frontend en producción
